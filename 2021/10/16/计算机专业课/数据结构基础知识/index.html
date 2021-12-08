@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content=xkzCujq5paJiY3gT>
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据结构基本知识及一些例子的解释，知识点参考王道考研系列《数据结构考研复习指导》。已完成查找、排序，有机会更新...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构基础知识——考研版">
+<meta property="og:url" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="杨泽康的博客">
+<meta property="og:description" content="数据结构基本知识及一些例子的解释，知识点参考王道考研系列《数据结构考研复习指导》。已完成查找、排序，有机会更新...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813153510293.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813160215482.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813160547137.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210814101913531.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210816152729591.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210816152234784.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818085044286.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818090543129.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818090927890.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818094427441.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818151757068.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818150642574.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818150802123.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818163431432.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819093339330.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819093428905.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819145429599.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819150025704.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819153658727.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820115206602.png">
+<meta property="og:image" content="https://images0.cnblogs.com/i/497634/201403/121659127078460.jpg">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820145833197.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820152125318.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820152210476.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820154605171.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829083839200.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829084448076.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829090436358.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829093658386.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829101426536.png">
+<meta property="og:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829112928869.png">
+<meta property="article:published_time" content="2021-10-16T03:18:42.000Z">
+<meta property="article:modified_time" content="2021-10-21T00:49:45.155Z">
+<meta property="article:author" content="杨泽康">
+<meta property="article:tag" content="计算机专业课">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE.png">
+
+<link rel="canonical" href="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构基础知识——考研版 | 杨泽康的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨泽康的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/langke.jpg">
+      <meta itemprop="name" content="杨泽康">
+      <meta itemprop="description" content="小码农">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨泽康的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构基础知识——考研版
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-16 11:18:42" itemprop="dateCreated datePublished" datetime="2021-10-16T11:18:42+08:00">2021-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-21 08:49:45" itemprop="dateModified" datetime="2021-10-21T08:49:45+08:00">2021-10-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" itemprop="url" rel="index"><span itemprop="name">计算机专业课</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-meta-item leancloud_visitors" data-flag-title="数据结构基础知识——考研版" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+            <div class="post-description">数据结构基本知识及一些例子的解释，知识点参考王道考研系列《数据结构考研复习指导》。已完成查找、排序，有机会更新...</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="查找">7. 查找</h1>
+<h2 id="基本概念">7.1 基本概念</h2>
+<p><strong>查找</strong>：在数据集合中查找满足条件的数据元素（查找成功/失败）</p>
+<p><strong>查找表（查找结构）</strong>：用于查找的数据集合。支持查、增、删（只有查为<strong>静态查找表</strong>，否则为<strong>动态查找表</strong>）</p>
+<ul>
+<li>静态查找表查找方法：顺序查找、折半查找、散列查找</li>
+<li>动态查找表查找方法：二叉排序树查找（二叉平衡树、B树）、散列查找</li>
+</ul>
+<p><strong>关键字</strong>：数据元素中可唯一表示改元素的项</p>
+<p><strong>平均查找长度</strong>：所有查找过程中需要进行关键字比较次数的平均值 <span class="math display">\[
+ASL=\sum_{i=1}^{n}P_iC_i\\
+P_i:查找第i个元素的概率（一般认为相等）\\
+C_i:查找第i个元素需要的比较次数
+\]</span></p>
+<h2 id="顺序查找线性查找">7.2 顺序查找（线性查找）</h2>
+<blockquote>
+<p>一般顺序查找</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE.png" alt="顺序查找"></p>
+<p>引入哨兵：减少了一般比较次数（判断是否越界） <span class="math display">\[
+ASL_{成功}=\frac{1+2+...+n}{n}=\frac{n+1}{2}\\
+ASL_{不成功}=n+1
+\]</span></p>
+<blockquote>
+<p>有序表上的顺序查找</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813153510293.png" alt="image-20210813153510293"></p>
+<p>特点：可提前查找失败（无需查找到最后） <span class="math display">\[
+ASL_{失败}=\frac{1+2+...+n+n}{n+1}
+\]</span></p>
+<h2 id="折半查找二分查找">7.3 折半查找(二分查找)</h2>
+<blockquote>
+<p>查找过程</p>
+</blockquote>
+<p>要求待查找数据表有序，每次语待查找区间的中间元素比较</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813160215482.png" alt="image-20210813160215482"></p>
+<blockquote>
+<p>判定树</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813160547137.png" alt="image-20210813160547137"></p>
+<p>中间结点表示查找成功（圆形）。叶子结点表示查找失败（方形）</p>
+<blockquote>
+<p>平均查找长度</p>
+</blockquote>
+<p>可根据判定树计算 <span class="math display">\[
+ASL_{成功}=\frac{1}{n}(1\times1+2\times2+...+h\times 2^{h-1})\frac{n+1}{n}log_2(n+1)-1 \approx log_2(n+1)-1
+\]</span></p>
+<p><span class="math display">\[
+ASL_{成功}=\frac{1}{n}\sum_{i=1}^nl_i=(1\times1+2\times2+3\times4+4\times4)/11=3\\
+ASL_{失败}=(3\times4+4\times8)/12=11/3
+\]</span> 时间复杂度：<span class="math inline">\(O(log_2n)\)</span>​</p>
+<h2 id="分块查找索引顺序查找">7.4 分块查找（索引顺序查找）</h2>
+<p>将查找表分为若干子块（块内无序，块间有序），为各个块建立一个索引表（各块最值关键字和第一个元素地址）</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210814101913531.png" alt="image-20210814101913531"></p>
+<blockquote>
+<p>平均查找长度</p>
+</blockquote>
+<p><span class="math display">\[
+ASL_{块间顺序查找}=L_I+L_S=\frac{b+1}{2}+\frac{s+1}{2}=\frac{s^2+2s+n}{2s}(平均分成b块)\\
+ASL_{块间二分查找}=L_I+L_S=\lceil log_2(b+1)\rceil+\frac{s+1}{2}
+\]</span></p>
+<h2 id="b树多路平衡查找树">7.5 B树（多路平衡查找树）</h2>
+<blockquote>
+<p>B树的阶</p>
+</blockquote>
+<p>B树中所有结点的孩子个数的最大值称为B树的阶</p>
+<blockquote>
+<p>B树</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210816152729591.png" alt="image-20210816152729591"></p>
+<p>一棵m阶B树或为空树，或为满足如下特性的m叉树</p>
+<ol type="1">
+<li>每个节点至多有m棵子树（m-1个关键字）</li>
+<li>若根节点不是终端结点，则至少有两棵子树</li>
+<li>除根节点外的所有非叶子结点至少有<span class="math inline">\(\lceil \frac{m}{2}\rceil\)</span>棵子树（<span class="math inline">\(\lceil \frac{m}{2}\rceil-1\)</span>个关键字）</li>
+<li>所有非叶子结点结构如下</li>
+</ol>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210816152234784.png" alt="image-20210816152234784"></p>
+<p><span class="math inline">\(K_i为结点的关键字且递增，P_i-1指向子树所有结点的关键字小于K_i，P_i指向子树所有结点的关键字大于K_i\)</span>​</p>
+<ol start="5" type="1">
+<li>所有叶结点出现在同一层次上且不带信息（查找失败）</li>
+</ol>
+<blockquote>
+<p>B树的高度</p>
+</blockquote>
+<p>B树：n个关键字、高度为h、阶数为m <span class="math display">\[
+log_m(n+1)\le h\le log_{\lceil \frac{m}{2} \rceil}(\frac{n+1}{2})+1
+\]</span></p>
+<blockquote>
+<p>B树的查找</p>
+</blockquote>
+<ol type="1">
+<li>在B树中查找结点</li>
+<li>将目标结点读入内存</li>
+<li>在节点内查找关键字（顺序查找/折半查找）</li>
+</ol>
+<blockquote>
+<p>B树的插入</p>
+</blockquote>
+<ol type="1">
+<li>定位：利用查找算法找到插入改关键字的最底层中的某个非叶子结点</li>
+<li>插入：插入后的结点关键字个数小于m则可以直接插入，否则对该节点进行分裂</li>
+<li>分裂：以<span class="math inline">\(\lceil\frac{m}{2}\rceil\)</span>为中心分裂出左右两个结点，同时将<span class="math inline">\(\lceil\frac{m}{2}\rceil\)</span>​插入父节点中，若父节点仍不满足条件则继续分裂直至到满足条件或者到跟结点（导致B树高度增1）</li>
+</ol>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818085044286.png" alt="image-20210818085044286"></p>
+<blockquote>
+<p>B树的删除</p>
+</blockquote>
+<p>当被删除关键字不在终端结点中时，用其前驱来代替。</p>
+<p>被删除关键字在中断结点时，有：</p>
+<ul>
+<li><p>直接删除关键字：被删除关键字所在结点的关键字个数<span class="math inline">\(\ge\lceil\frac{m}{2}\rceil\)</span></p></li>
+<li><p>兄弟够借：被删除关键字所在结点的关键字个数<span class="math inline">\(=\lceil\frac{m}{2}\rceil-1\)</span>,且与其相邻的兄弟结点的关键字个数<span class="math inline">\(\ge\lceil\frac{m}{2}\rceil\)</span>​，则父子换位</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818090543129.png" alt="image-20210818090543129"></p></li>
+<li><p>兄弟不够借：被删除关键字所在结点的关键字个数<span class="math inline">\(=\lceil\frac{m}{2}\rceil-1\)</span>,且与其相邻的兄弟结点的关键字个数<span class="math inline">\(=\lceil\frac{m}{2}\rceil-1\)</span>​，则合并删除关键字后的结点与其兄弟结点和双亲节点中的关键字（双亲结点中关键字会减少一个，不满足平衡条件的话继续递归调整）</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818090927890.png" alt="image-20210818090927890"></p></li>
+</ul>
+<h2 id="b树">7.6 B+树</h2>
+<p>B+树是应数据库所需而出现的一种B树的变形树。</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818094427441.png" alt="image-20210818094427441"></p>
+<ol type="1">
+<li>每个分支结点至少有<span class="math inline">\(\lceil\frac{m}{2}\rceil\)</span>​棵子树（非叶根节点至少两棵），至多有m棵子树</li>
+<li>结点的子树个数与关键字个数相等（非叶子结点不存储记录）</li>
+<li>所有叶结点包含全部关键字及指向相应记录的指针，叶结点中将关键字按大小顺序排列，并且相邻叶结点按大小顺序相互链接起来</li>
+<li>所有分支结点中仅包含它的各个子节点中关键字的最大值及指向其子结点的指针。</li>
+</ol>
+<h2 id="散列表">7.7 散列表</h2>
+<blockquote>
+<p>基本概念</p>
+</blockquote>
+<p><strong>散列函数</strong>：将查找表中的关键字映射成该关键字对应的地址的函数</p>
+<p>Hash(key)=Addr</p>
+<p><strong>冲突</strong>：散列函数将两个及两个以上的不同关键字映射到同一地址</p>
+<p><strong>散列表</strong>：根据关键字而直接进行访问的数据结构（关键字可存储地址之间的映射）</p>
+<blockquote>
+<p>散列函数构造方法</p>
+</blockquote>
+<ol type="1">
+<li><p><strong>直接定址法</strong>：直接取关键字的某个线性函数值为散列地址 <span class="math display">\[
+H(key)=key或H(key)=a\times key+b
+\]</span></p></li>
+<li><p><strong>除留余数法</strong> <span class="math display">\[
+H(key)=key\%p
+\]</span></p>
+<p>p应为不大于哈希表长度的质数或是不含小于20的质因数的合数</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818151757068.png" alt="image-20210818151757068"></p></li>
+<li><p><strong>数字分析法</strong>：选择数码分布较为均匀的若干位作为散列地址</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818150642574.png" alt="image-20210818150642574"></p></li>
+<li><p><strong>平方取中法</strong>：取关键字的平方值的中间几位作为散列地址</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818150802123.png"></p></li>
+</ol>
+<blockquote>
+<p>处理冲突的方法</p>
+</blockquote>
+<ol type="1">
+<li><p><strong>开放地址法</strong>：可将冲突的键名存放到其他空闲地址 <span class="math display">\[
+H_i=(H(key)+d_i)\%m\\
+d_i为增量序列\\
+m表示散列表表长
+\]</span></p>
+<ol type="1">
+<li><p><strong>线性探测法</strong>：<span class="math inline">\(d_i=0,1,2,...,m-1\)</span></p></li>
+<li><p><strong>平方探测法</strong>：<span class="math inline">\(d_i=0^2,1^2,-1^2,2^2,-2^2,...,k^2,-k^2\)</span></p></li>
+<li><p><strong>再散列法</strong>：<span class="math inline">\(d_i=Hash_2(key)\)</span>，当第一个散列函数得到的地址发生冲突时，则利用第二个散列函数计算该关键字的地址增量 <span class="math display">\[
+H_i=(H(key)+i\times Hash_2(key))\% m
+\]</span></p></li>
+</ol></li>
+<li><p><strong>拉链法</strong>：将所有的同义词（冲突的键名）存储在一个线性链表内</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210818163431432.png" alt="image-20210818163431432"></p></li>
+</ol>
+<blockquote>
+<p>散列查找</p>
+</blockquote>
+<p>检查查找表中<span class="math inline">\(Addr=Hash(key)\)</span>​​​​的位置上是否有记录，若无记录则返回<strong>查找失败</strong>，若有记录比较它与key的值，若相等则返回<strong>查找成功</strong>，否则按处理冲突的方法计算“下一个散列地址”继续监测。</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819093339330.png" alt="image-20210819093339330"></p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819093428905.png" alt="image-20210819093428905"></p>
+<p>散列表的查找效率取决于：<strong>散列函数</strong>、<strong>处理冲突的方法</strong>、<strong>装填因子</strong> <span class="math display">\[
+填装因子\alpha=\frac{表中记录数n}{散列表长度m}
+\]</span> 散列表的平均查找长度依赖于散列表的装填因子</p>
+<h1 id="排序">8. 排序</h1>
+<h2 id="基本概念-1">8.1 基本概念</h2>
+<blockquote>
+<p>排序</p>
+</blockquote>
+<p>重新排列表中的元素，使表中的元素满足按关键字有序的过程。</p>
+<blockquote>
+<p>算法的稳定性</p>
+</blockquote>
+<p>排序表中关键字相同的两个元素，排序前后其相对位置不变，则该算法为<strong>稳定的</strong>，否则是<strong>不稳定的</strong>。</p>
+<blockquote>
+<p>分类</p>
+</blockquote>
+<ul>
+<li>内部排序：排序期间所有元素存放在内存</li>
+<li>外部排序：排序期间所有原发无法同时存放在内存，在排序期间需不断地尽心内外村置换。</li>
+</ul>
+<h2 id="插入排序">8.2 插入排序</h2>
+<p>每次将一个待排序记录按关键字大小插入到已排好序的子序列中。</p>
+<h3 id="直接插入排序">8.2.1 直接插入排序</h3>
+<blockquote>
+<p>步骤</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819145429599.png" alt="image-20210819145429599"></p>
+<p>边查边移</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819150025704.png" alt="image-20210819150025704"></p>
+<blockquote>
+<p>性能</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(1)\)</span></p>
+<p>时间效率：<span class="math inline">\(O(n^2)\)</span></p>
+<table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 43%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>最好情况</th>
+<th>最坏情况(考虑哨兵)</th>
+<th>最坏情况（未考虑哨兵）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>比较次数</td>
+<td>n-1</td>
+<td><span class="math inline">\(\sum_{i=2}^{n}i=\frac{(n+2)(n-1)}{2}\)</span> ​​</td>
+<td><span class="math inline">\(\sum_{i=2}^{n}(i-1)=\frac{n(n-1)}{2}\)</span>​​​</td>
+</tr>
+<tr class="even">
+<td>移动次数</td>
+<td>0</td>
+<td><span class="math inline">\(\sum_{i=2}^{n}(i+1)=\frac{(n+4)(n-1)}{2}\)</span>​​​</td>
+<td><span class="math inline">\(\sum_{i=2}^{n}i=\frac{(n+2)(n-1)}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>算法是稳定的</p>
+<h3 id="折半插入排序">8.2.2 折半插入排序</h3>
+<p>先折半查找再移动</p>
+<p>查找复杂度为<span class="math inline">\(O(nlog_2n)\)</span>，时间复杂度仍为<span class="math inline">\(O(n^2)\)</span>​</p>
+<p>算法是稳定的</p>
+<h3 id="希尔排序缩小增量排序">8.2.3 希尔排序（缩小增量排序）</h3>
+<p>基于：直接插入排序的待排序列为有序时时间复杂度为<span class="math inline">\(O(n)\)</span>​</p>
+<blockquote>
+<p>过程</p>
+</blockquote>
+<p>将每隔某个“增量”的记录组成一个子表<span class="math inline">\(L[i,i+d,i+2d,...,i+kd]\)</span>，对各个子表分别进行插入排序，当整个表中元素呈“基本有序”时，再对全体记录进行一次直接插入排序。</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210819153658727.png" alt="image-20210819153658727"></p>
+<blockquote>
+<p>算法效率</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(1)\)</span></p>
+<p>时间效率：当n在某个特定范围时，复杂度约为<span class="math inline">\(O(n^{1.3})\)</span>，最坏为<span class="math inline">\(O(n^2)\)</span></p>
+<p>算法是不稳定的</p>
+<h2 id="交换排序">8.3 交换排序</h2>
+<p>根据序列中两个元素关键字的比较结果来对换这两个记录在序列中的位置。</p>
+<h3 id="冒泡排序">8.3.1 冒泡排序</h3>
+<p>从前（后）往后（前）两两比较相邻元素值，若为逆序则交换它们，一趟冒泡后，最值元素被移到末尾。</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820115206602.png" alt="image-20210820115206602"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(1)\)</span></p>
+<p>时间效率：最好情况下<span class="math inline">\(O(n)\)</span>，最坏情况<span class="math inline">\(O(n^2)\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>最好情况（顺序）</th>
+<th>最坏情况（逆序）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>比较次数</td>
+<td>n-1</td>
+<td><span class="math inline">\(\sum_{i=1}^{n-1}(n-i)=\frac{n(n-1)}{2}\)</span></td>
+</tr>
+<tr class="even">
+<td>移动次数（交换次数<em>3</em>）</td>
+<td>0</td>
+<td><span class="math inline">\(\sum_{i=1}^{n-1}3(n-i)=\frac{3n(n-1)}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>算法是稳定的</p>
+<h3 id="快速排序">8.3.2 <strong>快速排序</strong></h3>
+<p>基于分治思想</p>
+<p>在待排序表<span class="math inline">\(L[1...n]\)</span>​中任取一个元素pivot作为枢轴，通过一趟排序将待排序表划分成两部分：小于pivot的部分<span class="math inline">\(L[1...k-1]\)</span>和大于piovt的部分<span class="math inline">\(L[k+1...n]\)</span>，则pivot最终放在了<span class="math inline">\(L[k]\)</span>位置上，然后递归地对两个子表重复上述操作。</p>
+<p><img src="https://images0.cnblogs.com/i/497634/201403/121659127078460.jpg" alt="121659127078460.jpg (1040Ã1199)"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：最好<span class="math inline">\(O(log_2{n})\)</span>,最差<span class="math inline">\(O(n)\)</span>,平均<span class="math inline">\(O(log_2n)\)</span></p>
+<p>时间效率：最坏(基本有序)<span class="math inline">\(O(n^2)\)</span>,理想<span class="math inline">\(O(nlog_2n)\)</span></p>
+<p>==快速排序是所有内部算法中平均性能最优的排序算法==</p>
+<p>算法是不稳定的</p>
+<h2 id="选择排序">8.4 选择排序</h2>
+<p>基本思想：逐步选取乱序序列中的最值元素添加到有序序列中</p>
+<h3 id="简单选择排序">8.4.1 简单选择排序</h3>
+<p>第i趟排序从<span class="math inline">\(L[i...n]\)</span>中选择关键字最小的元素与<span class="math inline">\(L[i]\)</span>​​交换，每趟可以确定一个元素的最终位置</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820145833197.png" alt="image-20210820145833197"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(1)\)</span></p>
+<p>时间效率：<span class="math inline">\(O(n^2)\)</span>，比较次数始终为<span class="math inline">\(\frac{n(n-1)}{2}\)</span>，交换次数最小为0，最大为<span class="math inline">\(3(n-1)\)</span></p>
+<p>算法是不稳定的</p>
+<h3 id="堆排序">8.4.2 <strong>堆排序</strong></h3>
+<blockquote>
+<p>堆</p>
+</blockquote>
+<p>n个关键字序列<span class="math inline">\(L[1...n]\)</span></p>
+<ul>
+<li>满足<span class="math inline">\(L(i)\ge L(2i)且L(i)\ge L(2i+1)\)</span>​则为<strong>大顶/根堆</strong></li>
+<li>满足<span class="math inline">\(L(i)\le L(2i)且L(i)\le L(2i+1)\)</span>则为<strong>小顶/根堆</strong></li>
+</ul>
+<p>其中，<span class="math inline">\(1\le i\le\lfloor\frac{n}{2}\rfloor\)</span></p>
+<blockquote>
+<p>过程</p>
+</blockquote>
+<p>堆顶元素为最值，输出堆顶元素-&gt;堆底元素送入堆顶-&gt;将堆顶元素向下调整使其继续保持堆的性质</p>
+<p><strong>构造初始堆</strong></p>
+<p>依次对以<span class="math inline">\(\lfloor\frac{n}{2}\rfloor-1\sim1\)</span>为根的子树进行调整</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820152125318.png" alt="image-20210820152125318"></p>
+<p><strong>堆调整</strong></p>
+<p>从根节点向下递归调整</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820152210476.png" alt="image-20210820152210476"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(1)\)</span></p>
+<p>时间效率：建堆<span class="math inline">\(O(n)\)</span>，n-1次向下调整每次<span class="math inline">\(O(h)\)</span>，总时间复杂度<span class="math inline">\(O(nlog_2n)\)</span></p>
+<p>算法是不稳定的</p>
+<h2 id="归并排序">8.5 <strong>归并排序</strong></h2>
+<p>基本思想：将两个或两个以上的有序表组合成一个新的有序表</p>
+<blockquote>
+<p>过程（2路归并排序）</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210820154605171.png" alt="image-20210820154605171"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：合并时有额外开支<span class="math inline">\(O(n)\)</span></p>
+<p>时间效率：每趟归并<span class="math inline">\(O(n)\)</span>，需要<span class="math inline">\(\lceil log_2n\rceil\)</span>​趟归并，故复杂度为<span class="math inline">\(O(nlog_2n)\)</span></p>
+<p>合并操作不会改变相同关键字记录的相对次序故算法是<strong>稳定的</strong></p>
+<h2 id="基数排序">8.6 基数排序</h2>
+<p>基于关键字各位的大小进行排序</p>
+<ul>
+<li><strong>最高位优先法（MSD）：</strong>按关键字位权重递减依次逐层划分成若干更小的子序列，最后将所有子序列依次连接成一个有序序列。</li>
+<li><strong>最低位优先法（LSD）：</strong>按关键字权重递增依次进行排序，最后形成一个有序序列。</li>
+</ul>
+<blockquote>
+<p>过程：分配-&gt;收集-&gt;...</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829083839200.png" alt="image-20210829083839200"></p>
+<blockquote>
+<p>性能分析</p>
+</blockquote>
+<p>空间效率：<span class="math inline">\(O(r),r为队列个数\)</span></p>
+<p>时间效率：<span class="math inline">\(O(d(n+r)),d趟分配和收集，一趟分配需要O(n),一趟收集需要O(r)\)</span></p>
+<p>算法是稳定的</p>
+<h2 id="各种内部排序算法比较"><strong>8.7 各种内部排序算法比较</strong></h2>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829084448076.png" alt="image-20210829084448076"></p>
+<h2 id="外部排序多路归并排序">8.8 外部排序（多路归并排序）</h2>
+<blockquote>
+<p>基本概念</p>
+</blockquote>
+<p><strong>外部排序：</strong>在许多应用中，经常需要对大文件进行排序，由于文件中记录多、信息量庞大，无法将整个文件复制进内存中进行排序，需要将待排序的记录存储在外存上，排序时再把数据一部分一部分地调入内存进行排序，在排序过程中需要多次进行内存和外存之间的交换。</p>
+<blockquote>
+<p>方法：多路归并排序</p>
+</blockquote>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829090436358.png" alt="image-20210829090436358"></p>
+<ol type="1">
+<li>根据内存缓冲区大小将外存上的文件分成若干等长度的子文件，依次读入内存并利用内部排序方法对它们进行排序，并将排序后得到的有序子文件（归并串/顺串）重新写回外存。</li>
+<li>对这些归并串进行逐趟归并，使归并串逐渐有小到大，直至得到整个有序文件为止。</li>
+</ol>
+<p><span class="math inline">\(外部排序总时间=内部排序所需时间+外存信息读写时间+内部归并所需时间\)</span></p>
+<p>外存读写时间远大于内部排序和内部归并的时间</p>
+<p><span class="math inline">\(外存读写时间=归并趟数\times读写一遍全部数据所需时间（常数）\)</span></p>
+<p><span class="math inline">\(归并趟数=\lceil log_kr\rceil，对r个初始归并段做k路归并\)</span></p>
+<p>故可通过增大归并路数或者减少初始归并段个数来提高外部排序由速度</p>
+<blockquote>
+<p>多路归并与败者树</p>
+</blockquote>
+<p>败者树：==使内部归并不受k的增大的影响==</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829093658386.png" alt="image-20210829093658386"></p>
+<p>叶子结点存放k个归并段在归并过程中当前参加比较的记录，中间结点存储左右子树的“失败者”，每次将最后的成功者插入归并结果段后，胜者继续从叶子结点继续比较到根节点。</p>
+<blockquote>
+<p>置换-选择排序（生成初始归并段）</p>
+</blockquote>
+<p>==产生更长的初始归并段==</p>
+<p>工作区固定大小，每次选工作区最小（大）的元素且该元素大于FO中最大的放入FO，否则输出一个归并段的结束标志，之后从FI读入一个新元素。</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829101426536.png" alt="image-20210829101426536"></p>
+<blockquote>
+<p>最佳归并树</p>
+</blockquote>
+<p>==组织长度不等的初始段的归并排序，使得I/O次数最少==</p>
+<p>以初始段长度为权重构建k叉哈夫曼树（初始段不足以构成一颗严格k叉树时需添加长度为0的“虚段”）</p>
+<blockquote>
+<p>“虚段”数目</p>
+</blockquote>
+<p><span class="math inline">\(叶子结点n个，中间结点（k个分支）n_k个，则对严格k叉树有：n=(k-1)n_k+1,则n_k=(n-1)/(k-1),故应补的虚段个数是使(n-1)\%(k-1)为0的最小个数\)</span>​​​​</p>
+<p><img src="/2021/10/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829112928869.png" alt="image-20210829112928869"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" rel="tag"><i class="fa fa-tag"></i> 计算机专业课</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/16/%E7%BC%96%E7%A8%8B/C++/C-STL%E5%BA%93%EF%BC%88%E5%A4%A7%E5%9B%BE%EF%BC%89/" rel="prev" title="C++ STL库（大图）">
+      <i class="fa fa-chevron-left"></i> C++ STL库（大图）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81/Haar%E7%89%B9%E5%BE%81/" rel="next" title="Haar特征">
+      Haar特征 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-text">7. 查找</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">7.1 基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E7%BA%BF%E6%80%A7%E6%9F%A5%E6%89%BE"><span class="nav-text">7.2 顺序查找（线性查找）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-text">7.3 折半查找(二分查找)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%9D%97%E6%9F%A5%E6%89%BE%E7%B4%A2%E5%BC%95%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="nav-text">7.4 分块查找（索引顺序查找）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">7.5 B树（多路平衡查找树）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91"><span class="nav-text">7.6 B+树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E8%A1%A8"><span class="nav-text">7.7 散列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-text">8. 排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">8.1 基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">8.2 插入排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">8.2.1 直接插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%98%E5%8D%8A%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">8.2.2 折半插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E7%BC%A9%E5%B0%8F%E5%A2%9E%E9%87%8F%E6%8E%92%E5%BA%8F"><span class="nav-text">8.2.3 希尔排序（缩小增量排序）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%8E%92%E5%BA%8F"><span class="nav-text">8.3 交换排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-text">8.3.1 冒泡排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-text">8.3.2 快速排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-text">8.4 选择排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-text">8.4.1 简单选择排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-text">8.4.2 堆排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">8.5 归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="nav-text">8.6 基数排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83"><span class="nav-text">8.7 各种内部排序算法比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">8.8 外部排序（多路归并排序）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨泽康"
+      src="/images/langke.jpg">
+  <p class="site-author-name" itemprop="name">杨泽康</p>
+  <div class="site-description" itemprop="description">小码农</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yang-ze-kang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yang-ze-kang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/The_Only_God?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;The_Only_God?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨泽康</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">211k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:24</span>
+
+</div>
+<div class="">
+ <span id="sitetime">本站</span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2021,10,15,15,00,00); //北京时间2018-2-13 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 本站已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}
+	siteTime();
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bUV8Ys1tsuMtJC5RGlflJnnU-gzGzoHsz',
+      appKey     : 'VbR5JkUrxVKTT8cv1SVABqQ1',
+      placeholder: "快输入你的评论吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  
+	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.85}});</script></body>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<!-- <script src="/lib/live2d-widget/autoload.js"></script>
+</html> -->

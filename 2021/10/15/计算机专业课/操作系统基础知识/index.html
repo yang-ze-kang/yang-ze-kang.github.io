@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content=xkzCujq5paJiY3gT>
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="操作系统基础知识，参考《计算机操作系统》汤小丹版。包括操作系统导论、进程及进程管理、处理机管理、存储器管理，还差I&#x2F;O管理和文件管理待完成，有机会更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统基础知识">
+<meta property="og:url" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="杨泽康的博客">
+<meta property="og:description" content="操作系统基础知识，参考《计算机操作系统》汤小丹版。包括操作系统导论、进程及进程管理、处理机管理、存储器管理，还差I&#x2F;O管理和文件管理待完成，有机会更新。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210803161333427.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807110220902.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807105407204.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807105618334.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809103816148.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809162937609.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809201617104.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809203949255.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813100213196.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813100409407.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813142354080.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829190845748.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830085400582.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830102953689.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830110708470.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830193820045.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830194113378.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830194910029.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830195115622.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830201158526.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830203729810.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831095815564.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831190246198.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192425548.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192655525.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192803758.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831210150263.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831210408012.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831213552708.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831214140088.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831214333757.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831215618668.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901095802951.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100023196.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100319687.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100736669.png">
+<meta property="article:published_time" content="2021-10-15T11:47:16.000Z">
+<meta property="article:modified_time" content="2021-10-16T03:55:52.828Z">
+<meta property="article:author" content="杨泽康">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="计算机专业课">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210803161333427.png">
+
+<link rel="canonical" href="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统基础知识 | 杨泽康的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨泽康的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/langke.jpg">
+      <meta itemprop="name" content="杨泽康">
+      <meta itemprop="description" content="小码农">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨泽康的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-15 19:47:16" itemprop="dateCreated datePublished" datetime="2021-10-15T19:47:16+08:00">2021-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-16 11:55:52" itemprop="dateModified" datetime="2021-10-16T11:55:52+08:00">2021-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" itemprop="url" rel="index"><span itemprop="name">计算机专业课</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-meta-item leancloud_visitors" data-flag-title="操作系统基础知识" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>15 分钟</span>
+            </span>
+            <div class="post-description">操作系统基础知识，参考《计算机操作系统》汤小丹版。包括操作系统导论、进程及进程管理、处理机管理、存储器管理，还差I/O管理和文件管理待完成，有机会更新。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="操作系统引论">1. 操作系统引论</h1>
+<h2 id="操作系统的目标">1.1 操作系统的目标</h2>
+<p>操作系统的目标与应用环境有关，主要目标包括：</p>
+<ul>
+<li><strong>方便性</strong>：便于用户使用。</li>
+<li><strong>有效性</strong>：提高系统资源的利用率、提高系统的吞吐量</li>
+<li><strong>可扩充性</strong>：无结构-&gt;模块化结构-&gt;层次结构-&gt;微内核结构</li>
+<li><strong>开放性</strong>：提高兼容性、方便互连。</li>
+</ul>
+<h2 id="操作系统的作用">1.2 操作系统的作用</h2>
+<ul>
+<li><strong>用户</strong>：用户与硬件系统之间的接口</li>
+<li><strong>系统资源</strong>：系统资源的管理者、实现了对计算资源的抽象</li>
+</ul>
+<h2 id="操作系统发展过程">1.3 操作系统发展过程</h2>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210803161333427.png" alt="image-20210803161333427"></p>
+<h2 id="操作系统基本特性">1.4 操作系统基本特性</h2>
+<p>并发、共享、虚拟、异步</p>
+<blockquote>
+<p>并发</p>
+</blockquote>
+<ul>
+<li><strong>并行</strong>：多个事件在同一时刻发生</li>
+<li><strong>并发</strong>：多个事件在同一时间间隔发生</li>
+</ul>
+<blockquote>
+<p>共享</p>
+</blockquote>
+<p>系统中的资源可供内存中多个并发执行的进程共同使用。</p>
+<ul>
+<li><strong>互斥共享方式</strong>：一段时间内只允许一个进程访问的资源（<strong>临界资源</strong>）</li>
+<li><strong>同时访问方式</strong>：宏观上允许一段时间内由多个进程“同时”访问；微观上，进程对资源的访问是交替进行的。</li>
+</ul>
+<blockquote>
+<p>虚拟</p>
+</blockquote>
+<p>将一个物理实体变成若干个逻辑实体的技术。</p>
+<ul>
+<li><strong>时分复用技术</strong>：利用某设备为一用户服务的空闲时间，转去为其他用户服务。
+<ul>
+<li><strong>虚拟处理机技术</strong>：多道程序并发执行。</li>
+<li><strong>虚拟设备技术</strong>：将一台I/O设备虚拟成多台逻辑上的I/O设备</li>
+<li><strong>虚拟存储技术</strong>：内外存置换</li>
+</ul></li>
+<li><strong>空分复用技术</strong>：提高内存利用率。</li>
+</ul>
+<blockquote>
+<p>异步</p>
+</blockquote>
+<p>进程是以人们不可预知的速度向前推荐的。</p>
+<h2 id="操作系统主要功能">1.5 操作系统主要功能</h2>
+<ul>
+<li><strong>处理机管理</strong>（进程管理）
+<ul>
+<li><strong>进程控制</strong>：创建、撤销进程，进程状态转换</li>
+<li><strong>进程同步</strong>：互斥方式、同步方式</li>
+<li><strong>进程通信</strong>：进程间信息交换</li>
+<li><strong>调度</strong>：作业调度（分配资源、创建进程）、进程调度（分配处理机）</li>
+</ul></li>
+<li><strong>存储器管理</strong>
+<ul>
+<li><strong>内存分配</strong></li>
+<li><strong>内存保护</strong></li>
+<li><strong>地址映射</strong>：逻辑地址&lt;-&gt;物理地址</li>
+<li><strong>内存扩充</strong>：从逻辑上扩充内存</li>
+</ul></li>
+<li><strong>I/O设备管理</strong>
+<ul>
+<li><strong>缓冲管理</strong>：缓和CPU和I/O设备速度不匹配的矛盾</li>
+<li><strong>设备分配</strong>：为用户的I/O请求分配相应的I/O设备及相应的控制器和通道。</li>
+<li><strong>设备处理</strong>：实现CPU和设备控制器之间的通信。</li>
+</ul></li>
+<li><strong>文件管理</strong>
+<ul>
+<li><strong>文件存储空间管理</strong></li>
+<li><strong>目录管理</strong></li>
+<li><strong>文件的读/写管理和保护</strong></li>
+</ul></li>
+<li><strong>操作系统和用户之间的接口</strong>
+<ul>
+<li><strong>用户接口</strong></li>
+<li><strong>程序接口</strong></li>
+</ul></li>
+</ul>
+<h2 id="操作系统结构">1.6 操作系统结构</h2>
+<blockquote>
+<p>传统操作系统结构</p>
+</blockquote>
+<p>无结构、模块化结构、分层式结构</p>
+<blockquote>
+<p>微内核结构</p>
+</blockquote>
+<ul>
+<li><strong>足够小的内核</strong></li>
+<li><strong>基于客户/服务器模式</strong></li>
+<li><strong>应用“机制与策略分离”原理</strong></li>
+<li><strong>采用面向对象技术</strong></li>
+</ul>
+<h2 id="操作系统内核">1.7 操作系统内核</h2>
+<blockquote>
+<p>处理机执行状态</p>
+</blockquote>
+<ul>
+<li><strong>系统态</strong>（管态）：能执行一切指令，访问所有寄存器和存储区</li>
+<li><strong>用户态</strong>（目态）：仅能执行规定的指令，访问指定的寄存器和存储区</li>
+</ul>
+<p>划分目的：防止OS本身及关键数据遭受应用程序有意或无意的破坏。</p>
+<blockquote>
+<p>OS内核功能</p>
+</blockquote>
+<ul>
+<li><strong>支撑功能</strong>
+<ul>
+<li>中断处理</li>
+<li>时钟管理</li>
+<li>原语操作</li>
+</ul></li>
+<li><strong>资源管理功能</strong>
+<ul>
+<li>进程管理</li>
+<li>存储器管理</li>
+<li>设备管理</li>
+</ul></li>
+</ul>
+<h1 id="进程">2. 进程</h1>
+<p>不存在前驱关系的作业/语句可以并发执行</p>
+<h2 id="进程描述和管理用到的数据结构">2.1 进程描述和管理用到的数据结构</h2>
+<blockquote>
+<p>进程控制块</p>
+</blockquote>
+<p><strong>进程控制块</strong>（PCB）：用于描述进程的基本情况和活动过程的数据结构，进而控制和管理进程。</p>
+<p><strong>进程实体=程序段+相关数据段+PCB</strong></p>
+<p>含有的信息：</p>
+<ul>
+<li>进程标识符：外部标识、内部标识</li>
+<li>处理机状态：处理器的各种寄存器内容</li>
+<li>进程调度信息：当前状态、进程调度所需信息（优先级、已等待时间）、事件（阻塞原因）</li>
+<li>进程控制信息：程序和数据地址、同步和通信机制、资源清单、链接指针（队列中下一进程的PCB的首地址）</li>
+</ul>
+<p>进程组织方式：线性方式、链接方式、索引方式</p>
+<blockquote>
+<p>进程信息表（资源信息表）</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807110220902.png" alt="image-20210807110220902"></p>
+<h2 id="进程控制">2.2 进程控制</h2>
+<blockquote>
+<p>进程的状态及转换</p>
+</blockquote>
+<p>进程的基本状态转换</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807105407204.png" alt="image-20210807105407204"></p>
+<p>引入挂起操作后的状态转换</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210807105618334.png"></p>
+<blockquote>
+<p>进程的控制权</p>
+</blockquote>
+<p>UNIX中子进程受创建其的父进程控制，构成了进程间的层次结构。</p>
+<p>Windows中通过句柄控制其它进程，句柄可传递，不存在层次关系。</p>
+<blockquote>
+<p>进程的创建过程</p>
+</blockquote>
+<ol type="1">
+<li>申请空白PCB</li>
+<li>为新进程分配其运行所需资源</li>
+<li>初始化进程控制块：标识信息、处理机状态信息、处理机控制信息</li>
+<li>如果就绪队列能够接纳新进程，便将新进程插入就绪队列。</li>
+</ol>
+<blockquote>
+<p>进程的终止过程</p>
+</blockquote>
+<ol type="1">
+<li>根据被终止进程的标识符，从PCB集合中检索出改进程的PCB，从中读出改进程的状态。</li>
+<li>若被终止进程正处于执行状态，应立即终止该进程的执行，并置调度标志位真，用于指示改进程被终止后应重新进行调度。</li>
+<li>若该进程还有子孙进程，还应将其所有子孙进程也都予以终止，以防它们成为不可控的进程。</li>
+<li>将被终止进程所拥有的的资源或者归还给其父进程，或者归还给系统。</li>
+<li>将被终止进程从所在队列中移出。</li>
+</ol>
+<blockquote>
+<p>进程的阻塞过程</p>
+</blockquote>
+<p><strong>引起原因</strong>：请求系统资源失败、等待某种操作完成（I/O操作）、新数据尚未到达、等待新任务到达</p>
+<p>进程通过调用阻塞原语主动阻塞自身。</p>
+<p>首先停止进程的执行，再将进程控制块的现行状态由“执行”改为阻塞，并插入阻塞队列。</p>
+<blockquote>
+<p>进程的唤醒过程</p>
+</blockquote>
+<p>首先把被阻塞的进程从等待该事件的阻塞队列中移出，将其PCB中的现行状态由阻塞改为就绪，然后再将该PCB插入到就绪队列中。</p>
+<blockquote>
+<p>进程的挂起过程</p>
+</blockquote>
+<p>挂起原语suspend</p>
+<ol type="1">
+<li>活动就绪（阻塞）-&gt;静止挂起（阻塞）</li>
+<li>把该进程的PCB复制到指定区域，方便用户或父进程考察该进程的运行情况。</li>
+<li>若被挂起的进程正在进行，则转向调度程序重新调度。</li>
+</ol>
+<blockquote>
+<p>进程的激活过程</p>
+</blockquote>
+<p>激活原语active</p>
+<ol type="1">
+<li>将进程从外村调入内存</li>
+<li>静止就绪（阻塞）-&gt;活动就绪（阻塞）</li>
+<li>检查被激活的程序是否会抢占处理机</li>
+</ol>
+<h2 id="进程同步">2.3 <strong>进程同步</strong></h2>
+<p>对多个相关进程在<strong>执行顺序</strong>上进行协调，使并发执行的诸进程之间能够按照一定的规则<strong>共享系统资源</strong>，并能很好的<strong>相互合作</strong>，从而使程序的执行具有<strong>可再现性</strong>。</p>
+<blockquote>
+<p>进程间相互制约关系</p>
+</blockquote>
+<ul>
+<li>间接相互制约：只能互斥地访问共享资源</li>
+<li>直接相互制约：进程间存在前驱后继关系</li>
+</ul>
+<blockquote>
+<p>临界资源和临界区</p>
+</blockquote>
+<p><strong>临界资源</strong>：进程间需互斥共享的资源（打印机、磁带机等）</p>
+<p><strong>临界区</strong>：每个进程中访问临界资源的那段代码</p>
+<blockquote>
+<p>进程同步应遵循的原则</p>
+</blockquote>
+<ul>
+<li>空闲让进</li>
+<li>忙则等待</li>
+<li>有限等待</li>
+<li>让权等待</li>
+</ul>
+<blockquote>
+<p>进程同步机制</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809103816148.png" alt="image-20210809103816148"></p>
+<blockquote>
+<p>经典进程同步问题</p>
+</blockquote>
+<ul>
+<li><strong>生产者消费者问题</strong>：
+<ul>
+<li>记录型信号量/AND信号量：生产者和消费者共享一个缓冲池，设置三个信号量缓冲池（互斥访问）、缓冲池慢、缓冲池空</li>
+<li>管程</li>
+</ul></li>
+<li><strong>哲学家进餐问题</strong>
+<ul>
+<li>记录型信号量：设置至多拿筷子的人数（进程数）</li>
+<li>AND信号量：同时拿到两个筷子才进餐</li>
+</ul></li>
+<li><strong>读者写者问题</strong>
+<ul>
+<li>记录型信号量：互斥信号量、读者数目信号量、读着数目改变信号量</li>
+<li>信号量集</li>
+</ul></li>
+</ul>
+<h2 id="进程通信">2.4 进程通信</h2>
+<blockquote>
+<p>进程通信类型</p>
+</blockquote>
+<ul>
+<li><strong>共享存储器系统</strong></li>
+<li><strong>管道(pipe)通信系统</strong>：通道即为共享文件</li>
+<li><strong>消息传递系统</strong>：将通信的数据封装在消息中，并利用操作系统提供的一组通信命令在进程间进行消息传递。</li>
+<li><strong>客户机-服务器系统</strong></li>
+</ul>
+<h2 id="线程">2.5 <strong>线程</strong></h2>
+<p>进程基本属性：<strong>可拥有资源的基本单位</strong>+<strong>可独立调度和分派的基本单位</strong></p>
+<blockquote>
+<p>线程特点</p>
+</blockquote>
+<ul>
+<li>调度和分派的基本单位</li>
+<li>进程之间可以并发执行，同一个进程的多个线程之间也可以并发执行</li>
+<li>线程拥有自己的少量资源，还允许多个线程共享该进程所拥有的资源</li>
+<li>线程的创建、撤销和切换代价远小于进程</li>
+<li>支持多处理机系统，可将一个进程的多个线程分配到多个处理机上</li>
+</ul>
+<blockquote>
+<p>线程实现方式</p>
+</blockquote>
+<ul>
+<li><strong>内核级线程</strong>：调度以线程为单位，利于多处理器并行，模式切换代价大（用户态和内核态切换）。</li>
+<li><strong>用户级线程</strong>：调度以进程为单位，统一进程的所有线程只能分配到一个处理器。</li>
+</ul>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809162937609.png" alt="image-20210809162937609"></p>
+<h1 id="处理机管理">3. 处理机管理</h1>
+<h2 id="处理机调度层次">3.1 处理机调度层次</h2>
+<blockquote>
+<p>高级调度（长程调度、作业调度）</p>
+</blockquote>
+<p>根据某种算法决定将外存中处于后备队列中的哪几个作业调入内存，为它们分配资源、创建进程并放入就绪队列。</p>
+<blockquote>
+<p>中级调度（内存调度）</p>
+</blockquote>
+<p>把暂时不能运行的进程调至外存等待。</p>
+<p>把外存上具备运行条件的就绪进程再重新调入内存。</p>
+<blockquote>
+<p>低级调度（短程调度、进程调度）</p>
+</blockquote>
+<p>根据某种算法决定就绪队列中的哪个进程获得处理机。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809201617104.png" alt="image-20210809201617104"></p>
+<h2 id="处理机调度算法目标">3.2 处理机调度算法目标</h2>
+<blockquote>
+<p>通用目标</p>
+</blockquote>
+<ul>
+<li>提高系统资源利用率</li>
+<li>诸进程都获得合理的CPU时间</li>
+<li>保持系统资源使用的平衡性（平衡计算型和I/O型作业）</li>
+<li>策略强制执行</li>
+</ul>
+<blockquote>
+<p>批处理系统目标</p>
+</blockquote>
+<ul>
+<li>平均周转时间短（作业周转时间：作业被提交到作业完成的时间间隔）</li>
+<li>系统吞吐量高</li>
+<li>处理机利用率大</li>
+</ul>
+<blockquote>
+<p>分时系统目标</p>
+</blockquote>
+<ul>
+<li>响应时间快</li>
+<li>响应时间的快慢与用户所请求服务的复杂性相适应</li>
+</ul>
+<blockquote>
+<p>实时系统目标</p>
+</blockquote>
+<ul>
+<li>保证截止时间（截止时间：某任务必须开始执行或完成的最迟时间）</li>
+<li>可预测性</li>
+</ul>
+<h2 id="作业调度">3.3 作业调度</h2>
+<blockquote>
+<p>作业</p>
+</blockquote>
+<p>==作业=程序+数据+作业说明书==</p>
+<p><strong>作业控制块（JCB）</strong>：保存系统对作业进行管理和调度所需的全部信息</p>
+<blockquote>
+<p>作业调度算法</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210809203949255.png" alt="image-20210809203949255"></p>
+<h2 id="进程调度">3.4 进程调度</h2>
+<blockquote>
+<p>分类</p>
+</blockquote>
+<ul>
+<li>非抢占式</li>
+<li>抢占式</li>
+</ul>
+<blockquote>
+<p>短进程优先原则</p>
+</blockquote>
+<p>新到的短进程可以抢占当前长进程的处理机</p>
+<blockquote>
+<p>轮转调度算法</p>
+</blockquote>
+<p>基于时间片，时间片用完或者进程结束进行进程切换</p>
+<blockquote>
+<p>优先级调度算法</p>
+</blockquote>
+<p>非抢占式、抢占式</p>
+<p>静态优先级、动态优先级</p>
+<blockquote>
+<p>多队列调度算法</p>
+</blockquote>
+<p>设置多个就绪队列，不同队列具有不同的优先级，每个就绪队列采用不同的调度算法</p>
+<blockquote>
+<p>多级反馈队列调度算法</p>
+</blockquote>
+<p>设置多个队列，优先级越低的队列时间片越长</p>
+<blockquote>
+<p>基于公平原则的调度算法</p>
+</blockquote>
+<ul>
+<li>保证调度算法：进程获得相同的处理器时间</li>
+<li>公平分享调度算法：用户获得相同的处理器时间</li>
+</ul>
+<blockquote>
+<p>实时调度</p>
+</blockquote>
+<ul>
+<li>非抢占式</li>
+<li>抢占式
+<ul>
+<li>基于时钟中断的抢占式优先级调度算法</li>
+<li>立即抢占的优先级调度算法</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>最早截止时间优先算法（EDF）</p>
+</blockquote>
+<p>任务的截止时间越早其优先级越高</p>
+<blockquote>
+<p>最低松弛度优先算法（LLF）</p>
+</blockquote>
+<p>任务的紧急程度越高其优先级越高</p>
+<h2 id="死锁">3.5 死锁</h2>
+<blockquote>
+<p>定义</p>
+</blockquote>
+<p>如果一组进程中的每一个进程都在等待仅有该组进程中的其他进程才能引发的事件，那么该组进程是死锁的。</p>
+<p>产生死锁的必要条件：<strong>互斥条件</strong>、<strong>请求和保持条件</strong>、<strong>不可抢占条件</strong>、<strong>循环等待条件</strong></p>
+<blockquote>
+<p>引起死锁原因</p>
+</blockquote>
+<ul>
+<li>竞争不可抢占性资源（可抢占性资源和不可抢占性资源）</li>
+<li>竞争可消耗资源（可重复性资源和消耗性资源）</li>
+<li>进程推进顺序不当</li>
+</ul>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813100213196.png" alt="image-20210813100213196"></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813100409407.png" alt="image-20210813100409407"></p>
+<blockquote>
+<p>处理死锁办法</p>
+</blockquote>
+<ul>
+<li><p><strong>预防死锁</strong>：破坏死锁四个必要条件中的一个或多个</p>
+<ul>
+<li>破坏“请求和保持”条件：一次性申请多个资源否则申请不成功</li>
+<li>破坏“不可抢占”条件：申请资源不成功时主动放弃已保持的资源</li>
+<li>破坏“循环等待”条件：对系统所有资源进行线性排序，每个进程必须按照序号递增的顺序请求资源</li>
+</ul></li>
+<li><p><strong>避免死锁</strong>：在资源分配过程中防止系统进入不安全状态，使用==银行家算法==获得安全序列。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210813142354080.png" alt="image-20210813142354080"></p></li>
+<li><p><strong>检测死锁</strong>：检测系统状态以确定系统中是否发生了死锁。</p>
+<p>==死锁定理==：S状态为死锁状态的充分条件是当且仅当S状态的资源分配图是不可完全简化（消去所有边，使所有进程结点编程孤立结点）的。</p></li>
+<li><p><strong>解除死锁</strong></p>
+<ul>
+<li>人工干预、死锁解除算法</li>
+<li>解除方法：抢占资源、终止进程</li>
+</ul></li>
+</ul>
+<h1 id="存储器管理">4. 存储器管理</h1>
+<h2 id="存储器的层次结构">4.1 存储器的层次结构</h2>
+<p>无法同时满足<strong>速度</strong>、<strong>容量</strong>、<strong>价格</strong>的要求故设计了多层结构的存储器。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210829190845748.png" alt="image-20210829190845748"></p>
+<ul>
+<li><strong>寄存器</strong>：具有与处理机相同的速度</li>
+<li><strong>主存储器</strong>：保存进程运行时的程序和数据，主存访问速度远低于CPU执行指令的速度</li>
+<li><strong>高速缓存</strong>：介于寄存器和存储器之间的存储器，备份主存中常用数据（局部性原理）减少对主存的访问次数，容量远大于寄存器、比助残小两到三个数量级（几十KB到几MB）</li>
+<li><strong>磁盘缓存</strong>：介于主存和磁盘之间，并不是实际存在的存储器而是利用主存中的部分存储空间暂时存放从磁盘读入的信息。</li>
+</ul>
+<h2 id="程序的装入和链接">4.2 程序的装入和链接</h2>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830085400582.png" alt="image-20210830085400582"></p>
+<blockquote>
+<p>程序的装入</p>
+</blockquote>
+<p>由装入程序将装入模块装入内存</p>
+<ul>
+<li><strong>绝对装入方式</strong>：适合计算机系统很小仅能运行单道程序时；事先已知用户程序在内存中的驻留地址（物理地址）；装入模块被装入内存后，程序中的相对地址与实际内存地址完全相同。</li>
+<li><strong>可重定位装入方式</strong>：多道程序环境下编译程序无法预知目标模块在内存中地址；用户编译形成的若干目标模块的其实地址为0，在装入时一次性（起始地址+所有逻辑地址）完成地址变换；</li>
+<li><strong>动态运行时的装入方式</strong>：程序在运行过程中它在内存中的位置经常改变；在装入时不立即把逻辑地址转换成物理地址，而是推迟到执行程序时再进行转换。</li>
+</ul>
+<blockquote>
+<p>程序的链接</p>
+</blockquote>
+<p>将目标模块以及其所需要的库函数装配成一个完整的装入模块。</p>
+<ul>
+<li><strong>静态链接方式</strong>：将目标模块及其所需的库函数链接成一个完整的装配模块</li>
+<li><strong>装入时动态链接</strong>：目标模块装入时，发生外部模块调用再将响应的模块调入内存；便于实现对目标模块的共享和修改更新。</li>
+<li><strong>运行时动态链接</strong>：由于某些外部调用并不会执行，对某些模块的链接推迟到程序执行时才进行。</li>
+</ul>
+<h2 id="连续分配存储管理">4.3 连续分配存储管理</h2>
+<p>为一个用户程序分配一个连续的内存空间</p>
+<h3 id="单一连续分配">4.3.1 单一连续分配</h3>
+<p>整个内存的用户空间由一道用户程序独占</p>
+<h3 id="固定分区分配">4.3.2 固定分区分配</h3>
+<p>将整个用户空间划分成若干个固定大小的区域，在每个分区中只装入一道作业。</p>
+<ul>
+<li><p>划分：分区大小相等、分区大小不等</p></li>
+<li><p>内存分配：建立分区使用表</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830102953689.png" alt="image-20210830102953689"></p></li>
+</ul>
+<h3 id="动态分区分配">4.3.3 动态分区分配</h3>
+<p>根据进程的实际需要，动态地为之分配内存空间</p>
+<blockquote>
+<p>数据结构</p>
+</blockquote>
+<p>描述空闲分区和已分配分区的情况</p>
+<p>空闲分区表、空闲分区链</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830110708470.png" alt="image-20210830110708470"></p>
+<blockquote>
+<p>动态分区分配管理的主要操作</p>
+</blockquote>
+<ul>
+<li><strong>分配内存</strong>：从空闲分区表（链）中选出满足所需大小的分区分配给作业，多余部分仍留在空闲分区表（链）中</li>
+<li><strong>回收内存</strong>：进程运行完释放内存时，系统根据回收区的首地址，从空闲区表（链）中找到相应的插入点，可能会涉及到空闲分区的合并</li>
+</ul>
+<blockquote>
+<p>动态分区分配算法</p>
+</blockquote>
+<ul>
+<li><strong>基于顺序搜索的动态分区分配算法</strong>
+<ul>
+<li><strong>首次适应算法（FF）</strong>：从头顺序查找第一个满足条件的空闲分区</li>
+<li><strong>循环首次适应算法（NF）</strong>：循环顺序查找第一个满足条件的空闲分区</li>
+<li><strong>最佳适应算法（BF）</strong>：和所需分区大小最接近的空闲分区</li>
+<li><strong>最坏适应算法（WF）</strong>：总是挑选最大的空闲分区</li>
+</ul></li>
+<li><strong>基于索引搜索的动态分区分配算法</strong>：提高搜索空闲分区的速度
+<ul>
+<li><strong>快速适应算法</strong>：将具有相同容量的空闲分区单独组成一个空闲分区链表，再为这样的多个空闲分区链表设立一个管理索引表；分配空闲分区时先差索引表再分配空闲分区，不对任何分区产生分割</li>
+<li><strong>伙伴系统</strong>：设定已分配分区和空闲分区大小均为<span class="math inline">\(2^k,1\le k \le m\)</span>，<span class="math inline">\(2^m\)</span>为整个可分配内存的大小，由此构成k个空闲分区表；分配长度为n的存储空间时，找<span class="math inline">\(2^{i-1}&lt; n \le 2^i\)</span>，之后在分区大小为<span class="math inline">\(2^i\)</span>的空闲分区链表中查找，若已分配完则i增1，直至到k找到，分配时若<span class="math inline">\(k&gt;i\)</span>将<span class="math inline">\(2^k\)</span>分成两个<span class="math inline">\(2^{k-1}\)</span>大小，一个加入到空闲分区链表，另一个继续递归分割直至到<span class="math inline">\(2^i\)</span></li>
+<li><strong>哈希算法</strong>：构造一张一空闲分区大小为关键字，首地址为键值的哈希表，在进行空闲分区分配时可快速找到相应的空闲分区链表</li>
+</ul></li>
+</ul>
+<h3 id="动态可重定位分区分配">4.3.4 动态可重定位分区分配</h3>
+<p><strong>紧凑</strong>：移动内存中作业的位置，将多个分散的小空闲分区拼接成一个大空闲分区</p>
+<p>相比动态分区分配算法增加了紧凑功能，党算法不能找到一个足够大的空闲分区以满足用户的需求时，若所有空闲分区的容量总和大于用户的需求则此时进行“紧凑”，将“紧凑”后的空闲分区分配给用户。</p>
+<h2 id="分页存储管理">4.4 分页存储管理</h2>
+<p>将用户程序的地址空间分成若干个固定大小（通常为1KB~8KB）的区域，成为<strong>页</strong>或<strong>页面</strong>。相应地，也将内存空间分为若干个<strong>物理块</strong>或<strong>页框</strong>。页和块的大小相同，这样可将用户程序的任一页放入任一物理块中，实现了离散分配。</p>
+<blockquote>
+<p>地址结构</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830193820045.png" alt="image-20210830193820045"></p>
+<blockquote>
+<p>页表</p>
+</blockquote>
+<p>实现从页号到物理块号的映射，大多驻留在内存中</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830194113378.png" alt="image-20210830194113378"></p>
+<blockquote>
+<p>地址变换机构</p>
+</blockquote>
+<p>将用户地址空间中的逻辑地址转换为内存空间中的物理地址</p>
+<ul>
+<li><p>基本的地址变换机构</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830194910029.png" alt="image-20210830194910029"></p></li>
+<li><p>具有快表（联想寄存器）的地址变换机构</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830195115622.png" alt="image-20210830195115622"></p></li>
+</ul>
+<p><span class="math display">\[
+EAT=t+t=2t\\
+EAT_{有快表}=a\times\lambda+(t+\lambda)(1-a)+t=2t+\lambda-t\times a\\
+EAT为内存的有效访问时间\\
+t为访问一次内存所需时间，\lambda为查找块表所需时间，a为快表命中率
+\]</span></p>
+<blockquote>
+<p>两级和多级页表</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830201158526.png" alt="image-20210830201158526"></p>
+<blockquote>
+<p>反置页表</p>
+</blockquote>
+<p>所有内存共用一张页表，为每个物理地址设置一个页表项，并将它们按物理块号排序，其中内容则是页号和其所隶属进程的标识符。</p>
+<h2 id="分段存储管理">4.5 分段存储管理</h2>
+<p>满足用户在编程和使用上的多方面要求：方便编程、信息共享、信息保护、动态增长、动态链接。</p>
+<blockquote>
+<p>地址结构</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210830203729810.png" alt="image-20210830203729810"></p>
+<blockquote>
+<p>段表</p>
+</blockquote>
+<p>为每个进程建立一张段映射表</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831095815564.png" alt="image-20210831095815564"></p>
+<blockquote>
+<p>地址变换机构</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831190246198.png" alt="image-20210831190246198"></p>
+<h2 id="段页式存储管理方式">4.6 段页式存储管理方式</h2>
+<p>分页-&gt;能有效提高内存利用率，分段-&gt;能更好的满足用户多方面的需要</p>
+<p>段页式：先将用户程序分成若干段，再把每个段分成若干页</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192425548.png" alt="image-20210831192425548"></p>
+<blockquote>
+<p>地址映射</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192655525.png" alt="image-20210831192655525"></p>
+<blockquote>
+<p>地址变换</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831192803758.png" alt="image-20210831192803758"></p>
+<h2 id="虚拟存储器">4.7 虚拟存储器</h2>
+<h3 id="虚拟存储器概述">4.7.1 虚拟存储器概述</h3>
+<p><strong>虚拟存储器</strong>：具有请求调入和置换功能，能从逻辑上对内存容量进行扩充的一种存储器系统。其逻辑容量由内存容量和外存容量之和所决定，其运行速度接近于内存速度而每位的成本接近于外存。</p>
+<blockquote>
+<p>局部性原理</p>
+</blockquote>
+<p>程序在执行时将呈现出局部性规律，即在一较短时间内，程序的执行仅局限于某个部分，相应地，它所访问的存储空间也局限于某个区域。</p>
+<ul>
+<li><strong>时间局限性</strong>：刚被执行的指令或访问的数据，在不就的将来可能再次被执行或访问</li>
+<li><strong>空间局限性</strong>：程序在一段时间内访问的地址可能集中在一定的范围内</li>
+</ul>
+<h3 id="请求分页存储方式">4.7.2 请求分页存储方式</h3>
+<p>在分页系统的基础上增加了请求调页功能和页面置换功能，它允许用户程序只装入少量页面的程序及数据即可启动运行，之后再通过请求调页功能及页面置换功能陆续地把即将运行的页面调入内存，同时把暂不运行的页面换出到外存上。</p>
+<blockquote>
+<p>硬件支持</p>
+</blockquote>
+<ol type="1">
+<li><p>请求页表机制</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831210150263.png" alt="image-20210831210150263"></p></li>
+<li><p>缺页中断机构</p></li>
+<li><p>地址变换机构</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831210408012.png" alt="image-20210831210408012"></p></li>
+</ol>
+<blockquote>
+<p>内存分配</p>
+</blockquote>
+<ol type="1">
+<li><p><strong>最小物理块数</strong>：能保证进程正常运行所需的最小物理块数</p></li>
+<li><strong>内存分配策略</strong>
+<ol type="1">
+<li><strong>固定分配局部置换</strong>：为每个进程分配一组固定数目（平均分配、按比例分配、考虑优先权的分配）的物理块，发生缺页时只能从分配给该进程的页面中选出一页换出</li>
+<li><strong>可变分配全局置换</strong>：先为每个进程分配一定数目的物理块，在进程运行期间可根据情况做适当的增加或减少，如果发生缺页则将OS所保留的空闲物理块中选出一块分配给该进程，空闲物理块用完时从内存中任选一页调出（可能是系统中任何一个进程中的页）。</li>
+<li><strong>可变分配局部置换</strong>：为每个进程分配一定数目的物理块，发生缺页时只允许从该进程在内存的页面中选出一页换出。如果进程在运行中频繁地发生缺页中断，则系统再为该进程分配若干个附加的物理块；反之若一个进程的缺页率特别低，则可适当减少分配给该进程的物理块数。</li>
+</ol></li>
+</ol>
+<blockquote>
+<p>页面置换算法</p>
+</blockquote>
+<ul>
+<li><p><strong>最佳置换算法</strong>：所选择的被淘汰页面是以后永不使用的，或是最长未来时间内不再被访问的页面</p></li>
+<li><p><strong>先进先出算法</strong>：总是淘汰最先进入内存党的页面</p></li>
+<li><p><strong>最近最久未使用算法（LRU）</strong>：选择最近最久未使用的页面予以淘汰</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831213552708.png" alt="image-20210831213552708"></p></li>
+<li><p><strong>最少使用置换算法（LFU）</strong>：选择最近时期使用最少的页面；需要移位寄存器</p></li>
+<li><p><strong>简单的Clock置换算法</strong>：为每页设置一位访问位，再将内存中的所有页面都通过链接指针连接成一个循环队列。当某页被访问时，其访问位被置1.算法选择某一页淘汰时，只需检查页的访问位，如果是0就选择该页换出，若为1则将其重新置0。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831214140088.png" alt="image-20210831214140088"></p></li>
+<li><p><strong>改进的Clock置换算法</strong>：相比之前考虑置换代价（置换出修改过的页面代价更大）</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831214333757.png" alt="image-20210831214333757"></p></li>
+</ul>
+<blockquote>
+<p>访问内存的有效时间</p>
+</blockquote>
+<p><span class="math display">\[
+EAT=\lambda+a\times t+(1-a)\times[t+f\times(\epsilon+\lambda+t)+(1-f)\times(\lambda+t)]\\
+a表示命中率，f表示缺页率\\
+\lambda为访问快表时间，t为访问内存时间，\epsilon为缺页中断处理时间
+\]</span></p>
+<blockquote>
+<p>抖动</p>
+</blockquote>
+<p>多道程序处理随着装入进程数目的增多处理机的利用率急速下降</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210831215618668.png" alt="image-20210831215618668"></p>
+<p><strong>产生原因</strong>：分配给进程的物理块数太少，导致进程运行时频繁出现缺页</p>
+<p><strong>预防“抖动”的方法</strong></p>
+<ul>
+<li><strong>采取局部置换策略</strong>：使发生抖动的进程不会影响其它进程</li>
+<li><strong>把工作集算法融入到处理机调度中</strong>：先检查每个进程在内存中的驻留页是否足够多，如果足够多则可从外存调入新的作业，否则首先为缺页率高的作业增加新的物理块。</li>
+<li><strong>利用“L=S”准则调节缺页率</strong>：L是缺页之间的平均时间，S是平均缺页服务时间。</li>
+<li><strong>选择暂停的进程</strong>：基于某种原则选择暂停某些当前活动的进程，将它们调出到磁盘上</li>
+</ul>
+<h3 id="请求分段存储方式">4.7.3 请求分段存储方式</h3>
+<p>请求分段系统在分段系统的基础上增加了请求调段及分段置换功能，它允许用户程序只要装入少数段的程序和数据即可启动运行，以后通过调段功能和段的置换功能将暂不运行的段调出。</p>
+<blockquote>
+<p>硬件支持</p>
+</blockquote>
+<ol type="1">
+<li><p>请求段表机制</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901095802951.png" alt="image-20210901095802951"></p></li>
+<li><p>缺段中断机构</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100023196.png" alt="image-20210901100023196"></p></li>
+<li><p>地址变换机构</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100319687.png" alt="image-20210901100319687"></p></li>
+</ol>
+<blockquote>
+<p>分段的共享与保护</p>
+</blockquote>
+<ul>
+<li><p><strong>共享段表</strong>：所有各共享段都在共享段表中占有一表项</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210901100736669.png" alt="image-20210901100736669"></p></li>
+<li><p><strong>共享段的分配与回收</strong>：对第一个请求使用该共享段的进程分配物理块将共享段调入该区，并在共享段表中增加一个表项，当又有其他进程请求使用该段时仅在共享段表中增加一个表项；当共享段计数count为0时才回收该共享段的物理内存。</p></li>
+<li><p><strong>分段保护</strong>：越界检查、存取控制检查、环保护机构</p></li>
+</ul>
+<h1 id="io管理">5. I/O管理</h1>
+<p><strong>主要任务</strong>：完成用户提出的I/O请求，提高I/O速率，提高设备利用率，为高层进程方便地使用这些设备提供手段。</p>
+<h2 id="io设备管理概述">5.1 I/O设备管理概述</h2>
+<h3 id="io设备的分类">5.1.1 I/O设备的分类</h3>
+<blockquote>
+<p>按隶属关系分类</p>
+</blockquote>
+<ul>
+<li>系统设备：操作系统生成时以登记在计算机系统中的标准设备，鼠标、键盘、磁盘等</li>
+<li>用户设备：操作系统生成时未登记在计算机系统中的标准设备，打印机、绘图仪、扫描仪等</li>
+</ul>
+<blockquote>
+<p>按共享属性分类</p>
+</blockquote>
+<ul>
+<li>独占设备：一段时间内只允许一个进程使用的设备</li>
+<li>共享设备：一段时间内允许多个进程同时访问的设备</li>
+<li>虚拟设备：通过虚拟技术将一台物理设备变换成多态虚拟设备</li>
+</ul>
+<blockquote>
+<p>按使用特性分类</p>
+</blockquote>
+<ul>
+<li>存储设备：计算机用于存储信息的设备</li>
+<li>I/O设备：与外界进行信息交换的涉笔</li>
+</ul>
+<blockquote>
+<p>按信息交换单位分类</p>
+</blockquote>
+<ul>
+<li>块设备：以数据块为单位组织和交换数据</li>
+<li>字符设备：以字符为单位组织和交换数据</li>
+</ul>
+<h3 id="io设备管理的功能">5.1.2 I/O设备管理的功能</h3>
+<ul>
+<li><strong>设备分配功能</strong>：按一定算法将设备分配给请求该设备的并发进程。</li>
+<li><strong>设备独立性</strong>：应用程序独立于具体使用的物理设备</li>
+<li><strong>实现设备驱动</strong></li>
+<li><strong>实现设备和设备、设备和CPU等之间的并行操作</strong></li>
+<li><strong>进行I/O缓冲区管理</strong></li>
+</ul>
+<h2 id="io系统">5.2 I/O系统</h2>
+<h3 id="io系统结构">5.2.1 I/O系统结构</h3>
+<h3 id="设备控制器">5.2.2 设备控制器</h3>
+<h3 id="io控制方式">5.2.3 I/O控制方式</h3>
+<h2 id="io软件">5.3 I/O软件</h2>
+<h2 id="设备分配与回收">5.4 设备分配与回收</h2>
+<h2 id="缓冲管理">5.5 缓冲管理</h2>
+<h2 id="磁盘存储器管理">5.6 磁盘存储器管理</h2>
+<h1 id="文件管理">6. 文件管理</h1>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" rel="tag"><i class="fa fa-tag"></i> 计算机专业课</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="计算机网络基础知识">
+      <i class="fa fa-chevron-left"></i> 计算机网络基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/16/%E7%BC%96%E7%A8%8B/python/numpy%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%88%E5%A4%A7%E5%9B%BE%EF%BC%89/" rel="next" title="numpy知识点（大图）">
+      numpy知识点（大图） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%BC%95%E8%AE%BA"><span class="nav-text">1. 操作系统引论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">1.1 操作系统的目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">1.2 操作系统的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B"><span class="nav-text">1.3 操作系统发展过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="nav-text">1.4 操作系统基本特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">1.5 操作系统主要功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="nav-text">1.6 操作系统结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8"><span class="nav-text">1.7 操作系统内核</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="nav-text">2. 进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E7%AE%A1%E7%90%86%E7%94%A8%E5%88%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">2.1 进程描述和管理用到的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-text">2.2 进程控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="nav-text">2.3 进程同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-text">2.4 进程通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-text">2.5 线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86"><span class="nav-text">3. 处理机管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E5%B1%82%E6%AC%A1"><span class="nav-text">3.1 处理机调度层次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E7%9B%AE%E6%A0%87"><span class="nav-text">3.2 处理机调度算法目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6"><span class="nav-text">3.3 作业调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-text">3.4 进程调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-text">3.5 死锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86"><span class="nav-text">4. 存储器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-text">4.1 存储器的层次结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A3%85%E5%85%A5%E5%92%8C%E9%93%BE%E6%8E%A5"><span class="nav-text">4.2 程序的装入和链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86"><span class="nav-text">4.3 连续分配存储管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%80%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D"><span class="nav-text">4.3.1 单一连续分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">4.3.2 固定分区分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">4.3.3 动态分区分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">4.3.4 动态可重定位分区分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86"><span class="nav-text">4.4 分页存储管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86"><span class="nav-text">4.5 分段存储管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-text">4.6 段页式存储管理方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-text">4.7 虚拟存储器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8%E6%A6%82%E8%BF%B0"><span class="nav-text">4.7.1 虚拟存储器概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%88%86%E9%A1%B5%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">4.7.2 请求分页存储方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%88%86%E6%AE%B5%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">4.7.3 请求分段存储方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#io%E7%AE%A1%E7%90%86"><span class="nav-text">5. I&#x2F;O管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#io%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E6%A6%82%E8%BF%B0"><span class="nav-text">5.1 I&#x2F;O设备管理概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#io%E8%AE%BE%E5%A4%87%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-text">5.1.1 I&#x2F;O设备的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#io%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-text">5.1.2 I&#x2F;O设备管理的功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#io%E7%B3%BB%E7%BB%9F"><span class="nav-text">5.2 I&#x2F;O系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#io%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="nav-text">5.2.1 I&#x2F;O系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-text">5.2.2 设备控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#io%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="nav-text">5.2.3 I&#x2F;O控制方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#io%E8%BD%AF%E4%BB%B6"><span class="nav-text">5.3 I&#x2F;O软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6"><span class="nav-text">5.4 设备分配与回收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E7%AE%A1%E7%90%86"><span class="nav-text">5.5 缓冲管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86"><span class="nav-text">5.6 磁盘存储器管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-text">6. 文件管理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨泽康"
+      src="/images/langke.jpg">
+  <p class="site-author-name" itemprop="name">杨泽康</p>
+  <div class="site-description" itemprop="description">小码农</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yang-ze-kang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yang-ze-kang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/The_Only_God?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;The_Only_God?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨泽康</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">211k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:24</span>
+
+</div>
+<div class="">
+ <span id="sitetime">本站</span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2021,10,15,15,00,00); //北京时间2018-2-13 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 本站已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}
+	siteTime();
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bUV8Ys1tsuMtJC5RGlflJnnU-gzGzoHsz',
+      appKey     : 'VbR5JkUrxVKTT8cv1SVABqQ1',
+      placeholder: "快输入你的评论吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  
+	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.85}});</script></body>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<!-- <script src="/lib/live2d-widget/autoload.js"></script>
+</html> -->

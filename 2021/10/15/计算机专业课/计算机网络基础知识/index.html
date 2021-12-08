@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content=xkzCujq5paJiY3gT>
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="计算机网络基础知识，包含计算机网络概述，以及从物理层、数据链路层、网络层、传输层和应用层五个层次分别讲解。参考自《计算机网络》谢希仁编著。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络基础知识">
+<meta property="og:url" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="杨泽康的博客">
+<meta property="og:description" content="计算机网络基础知识，包含计算机网络概述，以及从物理层、数据链路层、网络层、传输层和应用层五个层次分别讲解。参考自《计算机网络》谢希仁编著。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615082504096.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615082548837.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615083222682.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615084711216.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615090612543.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616093930596.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616101854270.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616101936552.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616102138618.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616102307546.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616103911477.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616103945950.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616112126161.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616112548863.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619093646014.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619095000312.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619095319111.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619100121170.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619102832932.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619105859993.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110235499.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110331655.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110739744.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619113419292.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619113903503.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619160618797.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619160812116.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619161142404.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619163210111.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619164333845.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619171427746.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619172136082.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619172451328.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619173220475.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/20180717204202563">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619173851054.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619201057470.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619202139046.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619205120129.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619210259532.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619210339638.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619212325042.png">
+<meta property="og:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619212843371.png">
+<meta property="article:published_time" content="2021-10-15T11:47:16.000Z">
+<meta property="article:modified_time" content="2021-10-16T04:12:02.696Z">
+<meta property="article:author" content="杨泽康">
+<meta property="article:tag" content="计算机专业课">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615082504096.png">
+
+<link rel="canonical" href="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机网络基础知识 | 杨泽康的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨泽康的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/langke.jpg">
+      <meta itemprop="name" content="杨泽康">
+      <meta itemprop="description" content="小码农">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨泽康的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-15 19:47:16" itemprop="dateCreated datePublished" datetime="2021-10-15T19:47:16+08:00">2021-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-16 12:12:02" itemprop="dateModified" datetime="2021-10-16T12:12:02+08:00">2021-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" itemprop="url" rel="index"><span itemprop="name">计算机专业课</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络基础知识" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>32 分钟</span>
+            </span>
+            <div class="post-description">计算机网络基础知识，包含计算机网络概述，以及从物理层、数据链路层、网络层、传输层和应用层五个层次分别讲解。参考自《计算机网络》谢希仁编著。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述">1.概述</h1>
+<h2 id="计算机网络在信息时代的应用">1.1 计算机网络在信息时代的应用</h2>
+<ol type="1">
+<li><p>Internet译名</p>
+<ol type="1">
+<li><p>因特网：官方</p></li>
+<li><p>互联网、国际互联网：民间</p></li>
+</ol></li>
+</ol>
+<blockquote>
+<p>区分</p>
+</blockquote>
+<ul>
+<li>internet：互连网（通用名词）</li>
+<li>Internet：互联网（专用名词）、因特网</li>
+</ul>
+<h2 id="互联网概述">1.2 互联网概述</h2>
+<p><strong>计算机网络：</strong>由若干<strong>结点(node)</strong>和连接这些结点的<strong>链路(link)</strong>组成。</p>
+<blockquote>
+<p>互联网基础结构发展的三个阶段</p>
+</blockquote>
+<ul>
+<li>单个网络ARPANET向互联网的发展过程</li>
+<li>建成了三级互联网（主干网、地区网、校园/企业网）</li>
+<li>逐渐形成了多层次ISP结构的互联网</li>
+</ul>
+<blockquote>
+<p>互联网的标准化工作</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615082504096.png" alt="image-20210615082504096"></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615082548837.png" alt="image-20210615082548837"></p>
+<h2 id="互联网组成">1.3 互联网组成</h2>
+<ul>
+<li>边缘部分：由所有连接在因特网上的主机组成。
+<ul>
+<li>通信方式：客户-服务器方式(C/S方式)、对等方式(P2P方式)</li>
+</ul></li>
+<li>核心部分：由大量网络和连接这些网络的路由器组成。
+<ul>
+<li>电路交换、报文交换、分组交换</li>
+<li>面向连接、无连接</li>
+</ul></li>
+</ul>
+<h2 id="计算机网络在我国的发展">1.4 计算机网络在我国的发展</h2>
+<h2 id="计算机网络分类">1.5 计算机网络分类</h2>
+<blockquote>
+<p>按作用范围分</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615083222682.png" alt="image-20210615083222682"></p>
+<blockquote>
+<p>按不同使用者分</p>
+</blockquote>
+<ul>
+<li>公用网</li>
+<li>专用网</li>
+</ul>
+<blockquote>
+<p>按网络拓扑结构</p>
+</blockquote>
+<ul>
+<li>星型拓扑</li>
+<li>环状拓扑</li>
+<li>总线拓扑</li>
+<li>树状拓扑</li>
+<li>混合拓扑</li>
+</ul>
+<h2 id="计算机网络性能">1.6 计算机网络性能</h2>
+<ul>
+<li><p><strong>速率、数据率、比特率</strong>：数据传输速率,b/s、kb/s、Mb/s、Gb/s</p></li>
+<li><p><strong>带宽</strong>：单位时间内网络中某信道所能通过的最高数据率,b/s</p></li>
+<li><p><strong>吞吐量</strong>：单位时间内通过某个网络的实际数据量</p></li>
+<li><p><strong>时延</strong>：数据从网络的一端传送到另一端所需时间</p>
+<ul>
+<li>发送时延、传播时延、处理时延、排队时延</li>
+</ul>
+<p><span class="math display">\[
+发送时延 = \frac{数据帧长度}{发送速率}\\
+传播时延 = \frac{信道长度}{电磁波在信道上的传播速率}
+\]</span></p></li>
+<li><p><strong>时延带宽积</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615084711216.png" alt="image-20210615084711216"></p></li>
+<li><p><strong>往返时间RTT</strong>：从发送方发送数据开始，到发送方收到接收方的确认，所需要的时间。</p></li>
+<li><p><strong>利用率</strong>：信道利用率、网络利用率（信道利用率加权平均） <span class="math display">\[
+D = \frac{D_0}{1-U}\\
+D_0:网络空闲时时延，D:网络当前时延，U:网络利用率
+\]</span></p></li>
+</ul>
+<h2 id="计算机网络体系结构">1.7 计算机网络体系结构</h2>
+<table>
+<tr>
+<td>
+OSI七层体系结构
+</td>
+<td>
+TCP/IP四层体系结构
+</td>
+<td>
+五层协议体系结构
+</td>
+<td>
+对应网络协议
+</td>
+</tr><tr>
+</tr><tr>
+<td>
+应用层
+</td>
+<td rowspan="3">
+应用层
+</td>
+<td rowspan="3">
+应用层
+</td>
+<td>
+HTTP、TFTP、NFS、WAIS、SMTP
+</td>
+</tr>
+<tr>
+<td>
+表示层
+</td>
+<td>
+Telnet、Rlogin、SNMP、Gopher
+</td>
+</tr>
+<tr>
+<td>
+会话层
+</td>
+<td>
+SMTP、DNS
+</td>
+</tr>
+<tr>
+<td>
+运输层
+</td>
+<td>
+运输层
+</td>
+<td>
+运输层
+</td>
+<td>
+TCP、UDP
+</td>
+</tr>
+<tr>
+<td>
+网络层
+</td>
+<td>
+网际层
+</td>
+<td>
+网络层
+</td>
+<td>
+IP、ICMP、ARP、RARP、AKP、UUCP
+</td>
+</tr>
+<tr>
+<td>
+数据链路层
+</td>
+<td rowspan="2">
+网络接口层
+</td>
+<td>
+数据链路层
+</td>
+<td>
+FDDI、Ethernet、Arpanet、PDN、SLIP、PPP
+</td>
+</tr>
+<tr>
+<td>
+物理层
+</td>
+<td>
+物理层
+</td>
+<td>
+IEEE 802.1A、IEEE 802.2到IEEE 802.11
+</td>
+</tr>
+</table>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210615090612543.png" alt="image-20210615090612543"></p>
+<h1 id="物理层">2.物理层</h1>
+<h2 id="基本概念">2.1 基本概念</h2>
+<p><strong>物理层主要任务</strong>：确定与传输媒体的接口有关的一些特性</p>
+<ul>
+<li><strong>机械特性</strong>：指明接口所用接线器的形状和尺寸、引线数目和排列、固定和锁定装置等等。</li>
+<li><strong>电气特性</strong>：指明在接口电缆的各条线上出现的电压的范围。</li>
+<li><strong>功能特性</strong>： 指明某条线上出现的某一电平的电压表示何种意义。</li>
+<li><strong>过程特性</strong>：指明对于不同功能的各种可能事件的出现顺序。</li>
+</ul>
+<h2 id="数据通信基础知识">2.2 数据通信基础知识</h2>
+<blockquote>
+<p>消息、数据、信号</p>
+</blockquote>
+<ul>
+<li>消息：如图像、语音。</li>
+<li>数据：运送消息的实体。</li>
+<li>信号：数据的电气的或电磁的表现。</li>
+</ul>
+<blockquote>
+<p>模拟信号、数字信号</p>
+</blockquote>
+<ul>
+<li><p>模拟信号：消息的参数的取值是连续的。</p></li>
+<li><p>数字信号：消息的参数的取值是离散的。</p>
+<ul>
+<li><p>码元：使用时域的波形表示数字信号时，代表不同离散数值的基本波形。</p>
+<p>传输速率对应波特率Baud</p></li>
+</ul></li>
+</ul>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616093930596.png" alt="image-20210616093930596"></p>
+<blockquote>
+<p>信息交互方式</p>
+</blockquote>
+<ul>
+<li><strong>单向通信（单工通信）</strong>：只能有一个方向的通信而没有反方向的交互(无线电广播，无线电视广播)。</li>
+<li><strong>双向交替通信（半双工通信）</strong>：通信的双方都可以发送信息，但不能双方同时发送(当然也就不能同时接收)。</li>
+<li><strong>双向同时通信（全双工通信）</strong>：通信的双方可以同时发送和接收信息。</li>
+</ul>
+<blockquote>
+<p>调制</p>
+</blockquote>
+<p><strong>基带信号</strong>：来自信源的信号。像计算机输出的代表各种文字或图像文件的数据信号都属于基带信号。</p>
+<p><strong>调制</strong>：基带信号往往包含有较多的低频成分，甚至有直流成分，而许多信道并不能传输这种低频分量或直流分量。因此必须对基带信号进行调制。</p>
+<ul>
+<li><p><strong>基带调制（编码）</strong>：紧紧对基带信号的波形进行变换，使它能够与信道特性相适应，变换后信号仍是基带信号。</p>
+<p>不归零制、归零制、曼彻斯特编码、差分曼彻斯特编码</p></li>
+<li><p><strong>带通调制</strong>：使用载波进行调制，把基带信号的频率范围搬移到较高的频段，并转换为模拟信号。</p>
+<p>调幅（AM）、调频（FM）、调相（PM）、正交振幅调制（QAM）</p></li>
+</ul>
+<blockquote>
+<p>信道的极限容量</p>
+</blockquote>
+<p>码元传输的速率越高，或信号传输的距离越远，在信道的输出端的波形的失真就越严重。</p>
+<ol type="1">
+<li><p>信道能通过的频率范围：奈氏准则、在任何信道中，码元传输的速率是有上限的，否则就会出现码间串扰的问题，使接收端对码元的判决（即识别）成为不可能。</p></li>
+<li><p>信噪比：香农用信息论的理论推导出了带宽受限且有高斯白噪声干扰的信道的极限、无差错的信息传输速率。 <span class="math display">\[
+C = Wlog_{2}{(1+S/N)}\\
+C为信息传输速率b/s \\
+W 为信道的带宽（以Hz为单位） \\
+S 为信道内所传信号的平均功率 \\
+N 为信道内部的高斯噪声功率
+\]</span></p>
+<ul>
+<li>信道的带宽或信道中的信噪比越大，则信息的极限传输速率就越高。</li>
+<li>只要信息传输速率低于信道的极限信息传输速率，就一定可以找到某种办法来实现无差错的传输。</li>
+</ul></li>
+</ol>
+<h2 id="物理层下面的传输媒体">2.3 物理层下面的传输媒体</h2>
+<ul>
+<li><p><strong>导引型传输媒体</strong>：电磁波被导引沿着固体媒体传播</p>
+<ul>
+<li><p><strong>双绞线</strong>：屏蔽双绞线STP、无屏蔽双绞线UTP、EIA/TIA-568标准</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616101854270.png" alt="image-20210616101854270"></p></li>
+<li><p><strong>同轴电缆</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616101936552.png" alt="image-20210616101936552"></p></li>
+<li><p><strong>光缆</strong>：多模光纤、单模光纤</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616102138618.png" alt="image-20210616102138618"></p></li>
+</ul></li>
+<li><p><strong>非导引型传输媒体</strong>：传输媒体为自由空间</p>
+<p>短波通信、无线电波通信、微波接力通信</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616102307546.png" alt="image-20210616102307546"></p></li>
+</ul>
+<h2 id="信道复用技术">2.4 信道复用技术</h2>
+<ul>
+<li><strong>频分复用</strong>：所有用户在同样的时间占用不同的带宽（频率带宽）资源</li>
+<li><strong>时分复用</strong>：将时间划分为一段段等长的时分复用帧（TDM 帧），每一个时分复用的用户在每一个 TDM 帧中占用固定序号的时隙</li>
+<li><strong>统计时分复用</strong>：不再固定分配时隙，而是动态分配，每个用户所占时隙不是周期性出现</li>
+<li><strong>波分复用</strong>：光的频分复用</li>
+<li><strong>码分复用CDM（码分多址CDMA）</strong>：各用户使用经过特殊挑选的不同码型，因此彼此不会造成干扰，要求码片序列不仅必须各不相同，并且还必须互相正交。
+<ul>
+<li>两个不同站的码片序列正交，规格内积都是0</li>
+<li>任何一个码片向量和该码片向量自己的规格化内积都是1</li>
+<li>一个码片向量和该码片反码的向量的规格化内积值是–1</li>
+</ul></li>
+</ul>
+<h2 id="数字传输系统">2.5 数字传输系统</h2>
+<blockquote>
+<p>脉码调制PCM体制：实质上是对模拟信号进行采样量化的过程</p>
+</blockquote>
+<p>北美的24路PCM标准、欧洲的30路PCM标准</p>
+<p>E1 的速率是 2.048 Mb/s，而 T1 的速率是 1.544 Mb/s</p>
+<p>标准的电话语音编码的速率是64kb/s</p>
+<blockquote>
+<p>同步光纤网 SONET 和同步数字系列 SDH</p>
+</blockquote>
+<p>旧的数字传输系统存在着许多缺点。其中最主要的是以下两个方面： 速率标准不统一。 不是同步传输。</p>
+<h2 id="宽带接入技术">2.6 宽带接入技术</h2>
+<blockquote>
+<p>xDSL技术</p>
+</blockquote>
+<p><strong>xDSL技术</strong>：用数字技术对现有的模拟电话用户线进行改造，使它能够承载宽带业务。把 0~4 kHz 低端频谱留给传统电话使用，而把原来没有被利用的高端频谱留给用户上网使用。</p>
+<blockquote>
+<p>DMT技术</p>
+</blockquote>
+<p><strong>DMT调制技术</strong>：采用频分复用的方法，把 40 kHz 以上一直到 1.1 MHz 的高端频谱划分为许多的子信道，其中 25 个子信道用于上行信道，而 249 个子信道用于下行信道。</p>
+<blockquote>
+<p>光纤同轴混合网HFC</p>
+</blockquote>
+<p>HFC网将原CATV网中的同轴电缆主干部分改换为光纤，并使用模拟光纤技术。</p>
+<blockquote>
+<p>FTTx技术</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616103911477.png" alt="image-20210616103911477"></p>
+<blockquote>
+<p>因特网接入方式</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616103945950.png" alt="image-20210616103945950"></p>
+<h1 id="数据链路层">3. 数据链路层</h1>
+<blockquote>
+<p>任务</p>
+</blockquote>
+<ul>
+<li><strong>封装成帧</strong>：将在网络层交下来的IP数据报组装成帧</li>
+<li><strong>透明传输</strong>：在两个相邻结点间的链路上传送以帧为单位的数据</li>
+<li><strong>差错检测</strong>：每一帧包括数据和必要的控制信息（如同步信息、地址信息、差错控制以及流量控制信息等）</li>
+</ul>
+<blockquote>
+<p>信道类型</p>
+</blockquote>
+<ul>
+<li><strong>点对点信道</strong>:使用一对一的点对点通信方式</li>
+<li><strong>广播信道</strong>:使用一对多的广播通信方式</li>
+</ul>
+<h2 id="点对点信道及协议">3.1 点对点信道及协议</h2>
+<h3 id="点对点信道">3.1.1 点对点信道</h3>
+<p><strong>链路</strong>：一条无源的点到点的物理线路段，中间没有任何其他的交换结点。</p>
+<p><strong>数据链路</strong>：除了物理线路外，还必须有通信协议来控制这些数据的传输。若把实现这些协议的硬件和软件加到链路上，就构成了数据链路。</p>
+<p><strong>帧</strong>：点对点信道的数据链路层的协议数据单元</p>
+<blockquote>
+<p>三个基本问题</p>
+</blockquote>
+<ul>
+<li><p><strong>封装成帧</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616112126161.png" alt="image-20210616112126161"></p></li>
+<li><p><strong>透明传输</strong>：字节填充法</p></li>
+<li><p><strong>差错检测</strong>：循环冗余检验 CRC，在数据后面添加上的冗余码称为帧检验序列 FCS</p></li>
+</ul>
+<h3 id="ppp协议">3.1.2 PPP协议</h3>
+<p>用户计算机和ISP进行通信时，一般都是使用 PPP 协议。</p>
+<blockquote>
+<p>PPP协议组成</p>
+</blockquote>
+<ul>
+<li>一个将 IP 数据报封装到串行链路的方法。</li>
+<li>链路控制协议 LCP (Link Control Protocol)。 建立、配置和测试数据链路的连接</li>
+<li>一套网络控制协议 NCP (Network Control Protocol)。 支持不同的网络层协议，如IP、OSI、DECnet、AppleTalk</li>
+</ul>
+<blockquote>
+<p>帧格式</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210616112548863.png" alt="image-20210616112548863"></p>
+<h2 id="广播信道及协议">3.2 广播信道及协议</h2>
+<h3 id="广播信道">3.2.1 广播信道</h3>
+<blockquote>
+<p>局域网</p>
+</blockquote>
+<p>网络为一个单位所拥有，且地理范围和站点数目均有限。</p>
+<p>拓扑：星形网、总线网、树型网、环形网</p>
+<p>共享信道</p>
+<ul>
+<li><p>静态划分信道：一旦分配，用户独占信道，代价高，不适合局域网</p>
+<ul>
+<li>频分复用、时分复用、波分复用、码分复用</li>
+</ul></li>
+<li><p>动态媒体接入</p>
+<ul>
+<li>随机接入（以太网：CSMA载波侦听多路访问）、受控接入（令牌环、多点线路探询、轮询）</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>以太网的两个标准</p>
+</blockquote>
+<p>IEEE 802.3</p>
+<p>DIX Ethernet V2</p>
+<blockquote>
+<p>适配器</p>
+</blockquote>
+<p>别名：网络接口板、通信适配器、网络接口卡、网卡</p>
+<p>作用：计算机通过适配器和局域网进行通信</p>
+<ul>
+<li>进行串行/并行转换</li>
+<li>对数据进行缓存</li>
+<li>在计算机的操作系统安装设备驱动程序</li>
+<li>实现以太网协议</li>
+</ul>
+<blockquote>
+<p>CSMA/CD协议</p>
+</blockquote>
+<p>两种重要措施：无连接、曼彻斯特编码</p>
+<ul>
+<li><strong>多点接入</strong>：许多计算机以多点接入的方式连接在一根总线上</li>
+<li><strong>载波监听</strong>：每一个站在发送数据之前先要检测一下总线上是否有其他计算机在发送数据，如果有，则暂时不要发送数据，以免发生碰撞</li>
+<li><strong>碰撞检测</strong>：计算机边发送数据边检测信道上的信号电压大小</li>
+</ul>
+<p><strong>争用期</strong>：最先发送数据帧的站，在发送数据帧后至多经过时间<span class="math inline">\(2τ\)</span>（端到端往返时延）就可知道发送的数据帧是否遭受了碰撞</p>
+<p><strong>退避算法</strong>：二进制指数类型退避算法</p>
+<p><strong>最短有效帧长</strong>：以太网规定了最短有效帧长为 64 字节</p>
+<p><strong>强化碰撞</strong>：当发送数据的站一旦发现发生了碰撞时，立即停止发送数据，再继续发送32或48比特的人为干扰信号，以便让所有用户都知道现在已经发生了碰撞</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619093646014.png" alt="image-20210619093646014"></p>
+<h3 id="以太网">3.2.2 以太网</h3>
+<blockquote>
+<p>传播介质</p>
+</blockquote>
+<p>传统以太网最初是使用<strong>粗同轴电缆</strong>，后来演进到使用比较便宜的<strong>细同轴电缆</strong>，最后发展为使用更便宜和更灵活的<strong>双绞线</strong>。</p>
+<blockquote>
+<p>集线器</p>
+</blockquote>
+<p>以太网采用星形拓扑，在星形的中心则增加了一种可靠性非常高的设备，叫做集线器。</p>
+<blockquote>
+<p>信道利用率</p>
+</blockquote>
+<p><strong>以太网发送一帧所需的平均时间</strong>:一个帧从开始发送，经可能发生的碰撞后，将再重传数次，到发送成功且信道转为空闲(即再经过时间 <span class="math inline">\(τ\)</span> 使得信道上无信号在传播)时为止。</p>
+<p>要提高以太网的信道利用率，就必须减小 <span class="math inline">\(τ\)</span> 与 T0 之比。 <span class="math display">\[
+a = \frac{τ}{T_0}
+\]</span></p>
+<p><span class="math display">\[
+极限信道利用率 S_{max}=\frac{T_0}{T_0+τ}=\frac{1}{1+a}
+\]</span></p>
+<blockquote>
+<p>MAC层</p>
+</blockquote>
+<p>MAC地址</p>
+<ul>
+<li>主机的硬件地址、物理地址</li>
+<li>IEEE 的注册管理机构 RA 负责向厂家分配地址字段的前三个字节(即高位 24 位，组织唯一标识符OUI)；后三个字节(即低位 24 位)由厂家自行指派，称为扩展标识符，必须保证生产出的适配器没有重复地址</li>
+<li>第一个字节的最低位I/G（Individual/Group）
+<ul>
+<li>0：单个地址</li>
+<li>1：组播地址</li>
+</ul></li>
+<li>第一个字节的最低第二位为G/L（Globe/Local）
+<ul>
+<li>0：G全球管理，厂商购买的MAC地址</li>
+<li>1：L本地管理，不用购买</li>
+</ul></li>
+</ul>
+<p>帧类型</p>
+<ul>
+<li>单播(unicast)帧（一对一），I/G=0</li>
+<li>广播(broadcast)帧（一对全体，全1）,ff-ff-ff-ff-ff-ff</li>
+<li>多播(multicast)帧（一对多）,I/G=1</li>
+</ul>
+<p>帧格式</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619095000312.png" alt="image-20210619095000312"></p>
+<ul>
+<li><p>MAC帧最短长度为512bit(64字节)</p></li>
+<li><p>帧间最小间隔为 9.6 μs，相当于 96 bit 的发送时间（10M以太网）。</p></li>
+</ul>
+<h3 id="扩展的局域网">3.2.3 扩展的局域网</h3>
+<blockquote>
+<p>在物理层扩展局域网</p>
+</blockquote>
+<p>用集线器组成的局域网都在一个碰撞域中<img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619095319111.png" alt="image-20210619095319111"></p>
+<ul>
+<li>优点
+<ul>
+<li>使原来属于不同碰撞域的局域网上的计算机能够进行跨碰撞域的通信。</li>
+<li>扩大了局域网覆盖的地理范围。</li>
+</ul></li>
+<li>缺点
+<ul>
+<li>碰撞域增大了，但总的吞吐量并未提高。</li>
+<li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来。</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>在数据链路层扩展局域网</p>
+</blockquote>
+<ol type="1">
+<li>网桥工作在数据链路层，它根据 MAC 帧的目的地址对收到的帧进行转发。</li>
+</ol>
+<p>目前使用得最多的网桥是<strong>透明网桥</strong>，透明”是指局域网上的站点并不知道所发送的帧将经过哪几个网桥，因为网桥对各站来说是看不见的。</p>
+<ol start="2" type="1">
+<li>网桥的<strong>自学习</strong>：网桥收到一帧后先进行自学习。查找转发表中与收到帧的源地址有无相匹配的项目。如没有，就在转发表中增加一个项目（源地址、进入的接口和时间）。如有，则把原有的项目进行更新。 <strong>转发帧</strong>。查找转发表中与收到帧的目的地址有无相匹配的项目。
+<ul>
+<li>如有，则按转发表中给出的接口进行转发。</li>
+<li>如没有，则通过所有其他接口（但进入网桥的接口除外）进行转发。</li>
+<li>若转发表中给出的接口就是该帧进入网桥的接口，则应丢弃这个帧（因为这时不需要经过网桥进行转发）。</li>
+</ul></li>
+</ol>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619100121170.png" alt="image-20210619100121170"></p>
+<ol start="3" type="1">
+<li><p>源路由网桥:在发送帧时将详细的路由信息放在帧的首部中。</p></li>
+<li><p>多接口网桥——以太网交换机</p>
+<p>利用以太网交换机可以很方便地实现虚拟局域网。</p></li>
+</ol>
+<h3 id="高速以太网">3.2.4 高速以太网</h3>
+<p>速率达到或超过 100 Mb/s 的以太网称为高速以太网。</p>
+<h1 id="网络层">4. 网络层</h1>
+<blockquote>
+<p>网络层提供的两种服务</p>
+</blockquote>
+<ul>
+<li>面向连接：虚电路服务</li>
+<li>无连接：数据报服务</li>
+</ul>
+<h2 id="网际协议ip">4.1 网际协议IP</h2>
+<blockquote>
+<p>配套使用的四个协议</p>
+</blockquote>
+<ul>
+<li>地址解析协议ARP(Address Resolution Protocol)</li>
+<li>逆地址解析协议RARP(Reverse Address Resolution Protocol)</li>
+<li>网际控制报文协议ICMP(Internet Control Message Protocol)</li>
+<li>网际组管理协议IGMP(Internet Group Management Protocol)</li>
+</ul>
+<blockquote>
+<p>网络互连所需中间设备</p>
+</blockquote>
+<ul>
+<li>物理层中继系统：<strong>转发器</strong>(repeater)。</li>
+<li>数据链路层中继系统：<strong>网桥</strong>或桥接器(bridge)。</li>
+<li>网络层中继系统：<strong>路由器</strong>(router)。</li>
+<li>网桥和路由器的混合物：<strong>桥路器</strong>(brouter)。</li>
+<li>网络层以上的中继系统：<strong>网关</strong>(gateway)。</li>
+</ul>
+<blockquote>
+<p>IP地址</p>
+</blockquote>
+<p>IP 地址就是给每个连接在因特网上的主机（或路由器）分配一个在全世界范围是唯一的 32 位的标识符。</p>
+<p>编码方式的发展：分类的IP地址-&gt;子网划分-&gt;构成超网</p>
+<ol type="1">
+<li><strong>分类IP地址</strong></li>
+</ol>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619102832932.png" alt="image-20210619102832932"></p>
+<p>网络号</p>
+<pre><code>全零代表本网络
+
+        127代表环回测试（A类）
+
+主机号
+
+        全0代表该主机所在的网络
+
+        全1表示该网络上的所有主机</code></pre>
+<ol start="2" type="1">
+<li><p><strong>划分子网</strong></p>
+<p>在IP地址中增加了一个“<strong>子网号字段</strong>”，是两级IP地址变成为三级</p>
+<p>使用<strong>子网掩码</strong>可以找出 IP 地址中的子网部分。</p></li>
+<li><p><strong>构成超网（无分类编址CIDR）</strong></p>
+<p>两级地址：网络前缀+主机号</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619105859993.png" alt="image-20210619105859993"></p></li>
+</ol>
+<blockquote>
+<p>IP地址与硬件地址</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110235499.png" alt="image-20210619110235499"></p>
+<blockquote>
+<p>IP数据报格式</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110331655.png" alt="image-20210619110331655"></p>
+<blockquote>
+<p>分组转发算法</p>
+</blockquote>
+<p>(1)从数据报的首部提取目的主机的 IP 地址 D, 得出目的网络地址为 N。 (2)若网络 N 与此路由器直接相连，则把数据报直接交付目的主机 D；否则是间接交付，执行(3)。 (3)若路由表中有目的地址为D的特定主机路由，则把数据报传送给路由表中所指明的下一跳路由器；否则，执行(4)。 (4)若路由表中有到达网络 N 的路由，则把数据报传送给路由表指明的下一跳路由器；否则，执行(5)。 (5) 若路由表中有一个默认路由，则把数据报传送给路由表中所指明的默认路由器；否则，执行(6)。 (6)报告转发分组出错。</p>
+<h2 id="地址解析协议-arp-和逆地址解析协议-rarp">4.2 地址解析协议 ARP 和逆地址解析协议 RARP</h2>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619110739744.png" alt="image-20210619110739744"></p>
+<p><strong>ARP高速缓存</strong>：里面有所连接在的局域网上的各主机和路由器的 IP 地址到硬件地址的映射表</p>
+<p>ARP是解决同一个局域网上的主机或路由器的IP地址和硬件地址的映射问题。</p>
+<p>当主机A欲向本局域网上的某个主机B发送IP数据报时，就先在其ARP高速缓存中查看有无主机B的IP地址。如有，就可查出其对应的硬件地址，再将此硬件地址写入 MAC 帧，然后通过局域网将该 MAC 帧发往此硬件地址。 如果没有则发送ARP数据报，获取主机B的硬件地址。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619113419292.png" alt="image-20210619113419292"></p>
+<h2 id="网际控制报文协议icmp">4.3 网际控制报文协议ICMP</h2>
+<p>提高IP数据报交付成功的机会</p>
+<ul>
+<li>ICMP 差错报告报文</li>
+<li>ICMP 询问报文</li>
+</ul>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619113903503.png" alt="image-20210619113903503"></p>
+<p>应用：PING</p>
+<h2 id="因特网的路由选择协议">4.4 因特网的路由选择协议</h2>
+<blockquote>
+<p>理想路由算法</p>
+</blockquote>
+<ul>
+<li><p>算法必须是正确的和完整的</p></li>
+<li><p>算法在计算上应简单</p></li>
+<li><p>算法应能适应通信量和网络拓扑的变化，自适应性也叫“稳健性”</p></li>
+<li><p>算法应具有稳定性</p></li>
+<li><p>算法应是公平的</p></li>
+<li><p>算法应是“最佳”的，时延低</p></li>
+</ul>
+<blockquote>
+<p>分类</p>
+</blockquote>
+<ul>
+<li><p><strong>静态路由选择策略</strong>——即非自适应路由选择，其特点是简单和开销较小，但不能及时适应网络状态的变化。</p></li>
+<li><p><strong>动态路由选择策略</strong>——即自适应路由选择，其特点是能较好地适应网络状态的变化，但实现起来较为复杂，开销也比较大。</p></li>
+</ul>
+<blockquote>
+<p>分层次的路由选择协议</p>
+</blockquote>
+<ul>
+<li><strong>内部网关协议IGP</strong> ：域内路由协议，在一个自治系统内部使用的路由选择协议。如 RIP 和 OSPF 协议。</li>
+<li><strong>外部网关协议EGP</strong> ：域间路由协议，源站和目的站处在不同的自治系统中，当数据报传到一个自治系统的边界时，就需要使用一种协议将路由选择信息传递到另一个自治系统中。这样的协议就是外部网关协议 EGP。目前使用最多的是 BGP-4（边界网关协议）。</li>
+</ul>
+<blockquote>
+<p>内部网关协议RIP</p>
+</blockquote>
+<p><strong>工作原理</strong>：分布式、基于距离向量的路由选择协议，网络中的每一个路由器都要维护从它自己到其他每一个目的网络的距离记录。</p>
+<p><strong>要点</strong></p>
+<ul>
+<li>仅和相邻路由器交换信息</li>
+<li>交换的信息是当前本路由器所知道的全部信息，即自己的路由表</li>
+<li>按固定的时间间隔交换路由信息，例如，每隔 30 秒</li>
+</ul>
+<p><strong>距离向量算法</strong></p>
+<p>收到相邻路由器（其地址为 X）的一个 RIP 报文： (1) 先修改此 RIP 报文中的所有项目：把“下一跳”字段中的地址都改为 X，并把所有的“距离”字段的值加 1。 (2) 对修改后的 RIP 报文中的每一个项目，重复以下步骤： 若项目中的目的网络不在路由表中，则把该项目加到路由表中， 否则若下一跳字段给出的路由器地址是同样的，则把收到的项目替换原路由表中的项目。 否则若收到项目中的距离小于路由表中的距离，则进行更新， 否则，什么也不做。 (3) 若 3 分钟还没有收到相邻路由器的更新路由表，则把此相邻路由器记为不可达路由器，即将距离置为16（距离为16表示不可达）。 (4) 返回。</p>
+<blockquote>
+<p>内部网关协议OSPF</p>
+</blockquote>
+<p>开放式最短路由优先</p>
+<p><strong>三个要点</strong></p>
+<ul>
+<li>向本自治系统中所有路由器发送信息</li>
+<li>发送的信息就是与本路由器相邻的所有路由器的链路状态</li>
+<li>只有当链路状态发生变化时，才用洪泛法向所有路由器发送此信息</li>
+</ul>
+<p>所有的路由器最终都能建立一个<strong>链路状态数据库</strong></p>
+<blockquote>
+<p>外部网关协议BGP</p>
+</blockquote>
+<p>不同自治系统的路由器之间交换路由信息的协议。</p>
+<p>边界网关协议 BGP 只能是力求寻找一条比较好的路由（不能兜圈子），而并非要寻找一条最佳路由。</p>
+<ul>
+<li><p><strong>BGP 发言人</strong></p>
+<p>每一个自治系统的管理员要选择至少一个路由器作为该自治系统的“ BGP 发言人” 。 BGP 发言人往往就是 BGP <strong>边界路由器</strong></p></li>
+<li><p><strong>BGP 交换路由信息</strong></p>
+<p>一个 BGP 发言人与其他自治系统中的 BGP 发言人要交换路由信息，就要先建立 TCP 连接（端口号179），然后在此连接上交换 BGP 报文以建立 BGP 会话(session)，利用 BGP 会话交换路由信息。</p></li>
+<li><p><strong>BGP发言人路由表</strong></p>
+<p>目的网络前缀、下一跳路由器、到达目的网络的AS序列</p></li>
+<li><p><strong>BGP-4 共使用四种报文</strong></p>
+<ul>
+<li>打开(<strong>OPEN</strong>)报文，用来与相邻的另一个BGP发言人建立关系，通信初始化</li>
+<li>更新(<strong>UPDATE</strong>)报文，用来发送某一路由的信息，以及列出要撤消的多条路由</li>
+<li>保活(<strong>KEEPALIVE</strong>)报文，用来确认打开报文和周期性地证实邻站关系</li>
+<li>通知(<strong>NOTIFICATION</strong>)报文，用来发送检测到的差错</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>路由器结构</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619160618797.png" alt="image-20210619160618797"></p>
+<ul>
+<li><strong>转发</strong>：路由器根据转发表将用户的 IP 数据报从合适的端口转发出去</li>
+<li><strong>路由选择</strong>：按照分布式算法，根据从各相邻路由器得到的关于网络拓扑的变化情况，动态地改变所选择的路由。</li>
+</ul>
+<p><strong>分组丢弃</strong>：若路由器处理分组的速率赶不上分组进入队列的速率，则队列的存储空间最终必定减少到零，这就使后面再进入队列的分组由于没有存储空间而只能被丢弃。</p>
+<p><strong>交换结构</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619160812116.png" alt="image-20210619160812116"></p>
+<h2 id="ip多播">4.5 IP多播</h2>
+<p>在一对多的通行中，多播可明显地减少网络中资源的消耗</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619161142404.png" alt="image-20210619161142404"></p>
+<blockquote>
+<p>网际组管理协议 IGMP</p>
+</blockquote>
+<p>使路由器知道多播组成员的信息</p>
+<blockquote>
+<p>多播路由选择协议</p>
+</blockquote>
+<p>连接在局域网上的多播路由器必须和因特网上的其他多播路由器协同工作，以便把多播数据报用最小代价传送给所有的组成员</p>
+<h2 id="虚拟专用网-vpn-和网络地址转换-nat">4.6 虚拟专用网 VPN 和网络地址转换 NAT</h2>
+<ul>
+<li><strong>本地地址</strong>——仅在机构内部使用的 IP 地址，可以由本机构自行分配，而不需要向因特网的管理机构申请。</li>
+<li><strong>全球地址</strong>——全球唯一的IP地址，必须向因特网的管理机构申请。</li>
+</ul>
+<blockquote>
+<p>RFC 1918 指明的专用地址</p>
+</blockquote>
+<ul>
+<li>10.0.0.0 到 10.255.255.255(10/8)</li>
+<li>172.16.0.0 到 172.31.255.255(172.16/12)</li>
+<li>192.168.0.0 到 192.168.255.255(192.168/16)</li>
+</ul>
+<p>这些地址只能用于一个机构的内部通信，而不能用于和因特网上的主机通信。 在因特网中的所有路由器对目的地址是专用地址的数据报一律不进行转发。</p>
+<blockquote>
+<p>虚拟专用网VPN</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619163210111.png" alt="image-20210619163210111"></p>
+<p>在每一个场所A或B内部的通信量都不经过因特网。但如果场所A的主机X要和另一个场所B的主机Y通信，那么就必须经过路由器<span class="math inline">\(R_1\)</span>和 <span class="math inline">\(R_2\)</span>。主机X同主机Y发送的IP 数据报的源地址是10.1.0.1 而目的地址是10.2.0.3。这个数据报先作为本机构的内部数据报从X发送到与因特网连接的路由器<span class="math inline">\(R_1\)</span>。路由器<span class="math inline">\(R_2\)</span>，收到内部数据报后，发现其目的网络必须通过因特网才能到达。 就把整个的内部数据报进行加密（这样就保证了内部数据报的安全），然后重新加上数据报的肖部，封装成为车因特网上发送的外部数据报，其源地址是路由器 <span class="math inline">\(R_1\)</span>的全球地址125.1.23.而目的地址是路由器<span class="math inline">\(R_2\)</span>的全球地址194.4.5.6。路由器<span class="math inline">\(R_2\)</span>收到数据报后将其数据部分取出进行解密，恢复出原来的内部数据报（目的地址是 10.2.0.3），交付给主机Y。可见虽然X向Y发送的数据报是通过了公用的因特网，但在效果上就好像是在本部门的专用网上传送一样。如果主机Y要向X发送数据报，那么所经过的步骤也是类创的。</p>
+<blockquote>
+<p>网络地址转换 NAT</p>
+</blockquote>
+<p>需要在专用网连接到因特网的路由器上安装NAT软件。装有NAT软件的路由器叫做<strong>NAT路由器</strong>，它至少有一个有效的外部全球地址<span class="math inline">\(IP_G\)</span>。所有使用本地地址的主机在和外界通信时都要在NAT路由器上将其本地地址转换成<span class="math inline">\(IP_G\)</span>才能和因特网连接。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619164333845.png" alt="image-20210619164333845"></p>
+<h2 id="ipv6">4.7 IPv6</h2>
+<h1 id="运输层">5.运输层</h1>
+<h2 id="运输层协议概述">5.1 运输层协议概述</h2>
+<p>运输层向它上面的应用层提供通信服务，它属于面向通信部分的最高层，同时也是用户功能中的最低层。</p>
+<p>只有位于网络边缘部分的主机的协议栈才有运输层，运输层为相互通信的应用进程提供了逻辑通信。</p>
+<blockquote>
+<p>主要功能</p>
+</blockquote>
+<ul>
+<li>运输层为应用进程之间提供端到端的逻辑通信（但网络层是为主机之间提供逻辑通信）。</li>
+<li>运输层还要对收到的报文进行差错检测(网络层只对IP数据报的首部进行检测)。</li>
+<li>运输层有两种不同的运输协议，即面向连接的 TCP 和无连接的 UDP。</li>
+</ul>
+<blockquote>
+<p>两个主要协议</p>
+</blockquote>
+<ul>
+<li><p>UDP</p>
+<ul>
+<li>传送数据之前不需要先建立连接。</li>
+<li>收到 UDP 报文后，不需要给出任何确认。</li>
+<li>虽然 UDP 不提供可靠交付，但某些情况下 UDP 最有效。</li>
+</ul></li>
+<li><p>TCP</p>
+<ul>
+<li><p>提供面向连接的服务。</p></li>
+<li><p>TCP 不提供广播或多播服务。</p></li>
+<li><p>增加了许多的开销。这不仅使协议数据单元的首部增大很多，还要占用许多的处理机资源。</p></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>端口</p>
+</blockquote>
+<p>为了使运行不同操作系统的计算机的应用进程能够互相通信，就<strong>必须用统一的方法</strong>对 TCP/IP 体系的应用进程进行标志。</p>
+<p><strong>协议端口号(端口)</strong>：通信的终点，因为只要把报文交到目的主机的某一个合适的目的端口，剩下的工作（即最后交付目的进程）就由 TCP 来完成。</p>
+<p><strong>16位端口号</strong></p>
+<ul>
+<li><p><strong>服务器端使用的端口号</strong></p>
+<ul>
+<li><p><strong>熟知端口号</strong>：0~1023</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>FTP</strong></th>
+<th><strong>TELNET</strong></th>
+<th><strong>SMTP</strong></th>
+<th><strong>DNS</strong></th>
+<th><strong>TFTP</strong></th>
+<th><strong>HTTP</strong></th>
+<th><strong>SNMP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>21</td>
+<td>23</td>
+<td>25</td>
+<td>53</td>
+<td>69</td>
+<td>80</td>
+<td>161</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>登记端口号</strong>：1024~49151，为没有熟知端口号的应用程序使用的。使用这个范围的端口号必须在 IANA 登记，以防止重复。</p></li>
+</ul></li>
+<li><p><strong>客户端使用的端口号</strong>：<strong>短暂端口号</strong>，49152~65535，留给客户进程选择暂时使用。通信结束后，这个端口号可供其他客户进程以后使用。</p></li>
+</ul>
+<h2 id="用户数据报协议udp">5.2 用户数据报协议UDP</h2>
+<blockquote>
+<p>特点</p>
+</blockquote>
+<ul>
+<li>无连接</li>
+<li>尽最大努力交付</li>
+<li>面向报文</li>
+<li>没有拥塞控制</li>
+<li>支持一对一、一对多、多对一、多对多的交互通信</li>
+<li>首部开销小</li>
+</ul>
+<blockquote>
+<p>过程</p>
+</blockquote>
+<ul>
+<li>发送方：应用层交给 UDP 多长的报文，UDP 就照样发送，即一次发送一个报文。</li>
+<li>接收方： UDP 对 IP 层交上来的 UDP 用户数据报，在去除首部后就原封不动地交付上层的应用进程，一次交付一个完整的报文。</li>
+<li>应用程序必须选择合适大小的报文。
+<ul>
+<li>太大在IP层需要分片</li>
+<li>太小影响传输效率</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>报文格式</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619171427746.png" alt="image-20210619171427746"></p>
+<h2 id="传输控制协议tcp">5.3 传输控制协议TCP</h2>
+<blockquote>
+<p>特点</p>
+</blockquote>
+<ul>
+<li>TCP 是面向连接的运输层协议。</li>
+<li>每一条 TCP 连接只能是点对点的（一对一）。</li>
+<li>TCP 提供可靠交付的服务。 无差错、不丢失、不重复、按序到达</li>
+<li>TCP 提供全双工通信。</li>
+<li>面向字节流。</li>
+</ul>
+<blockquote>
+<p>套接字</p>
+</blockquote>
+<p>套接字 socket = (IP地址: 端口号)</p>
+<p>每一条 TCP 连接唯一地被通信两端的两个端点（即两个套接字）所确定</p>
+<blockquote>
+<p>停止等待协议</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619172136082.png" alt="image-20210619172136082"></p>
+<p>确认丢失、确认迟到</p>
+<blockquote>
+<p>连续ARQ协议</p>
+</blockquote>
+<p>接收方一般采用<strong>累积确认</strong>的方式。即不必对收到的分组逐个发送确认，而是对按序到达的最后一个分组发送确认，这样就表示：到这个分组为止的所有分组都已正确收到了。</p>
+<p><strong>Go-back-N（回退 N）</strong>，表示需要再退回来重传已发送过的 N 个分组。</p>
+<blockquote>
+<p>TCP报文段格式</p>
+</blockquote>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619172451328.png" alt="image-20210619172451328"></p>
+<blockquote>
+<p>可靠传输</p>
+</blockquote>
+<ul>
+<li>TCP 连接的每一端都必须设有两个窗口——一个发送窗口和一个接收窗口。</li>
+<li>TCP 的可靠传输机制用字节的序号进行控制。TCP 所有的确认都是基于序号而不是基于报文段。</li>
+<li>TCP 两端的四个窗口经常处于动态变化之中。</li>
+<li>TCP连接的往返时间 RTT 也不是固定不变的。需要使用特定的算法估算较为合理的重传时间。</li>
+</ul>
+<blockquote>
+<p>流量控制</p>
+</blockquote>
+<p>让发送方的发送速率不要太快，既要让接收方来得及接收，也不要使网络发生拥塞。</p>
+<p><strong>滑动窗口机制</strong></p>
+<blockquote>
+<p>拥塞控制</p>
+</blockquote>
+<ul>
+<li><strong>拥塞控制</strong>是一个全局性的过程，涉及到所有的主机、所有的路由器，以及与降低网络传输性能有关的所有因素。</li>
+<li><strong>流量控制</strong>往往指在给定的发送端和接收端之间的点对点通信量的控制。</li>
+<li>流量控制所要做的就是抑制发送端发送数据的速率，以便使接收端来得及接收。</li>
+</ul>
+<p><strong>四种方法：慢开始、拥塞避免、快重传、快恢复</strong></p>
+<blockquote>
+<p>TCP运输连接管理</p>
+</blockquote>
+<p>三个阶段：<strong>连接建立</strong>、<strong>数据传送</strong>和<strong>连接释放</strong>。</p>
+<p><strong>三次握手建立TCP连接</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619173220475.png" alt="image-20210619173220475"></p>
+<ul>
+<li><p><strong>第一次握手</strong>：客户端发送syn包(syn=j)到服务器，并进入SYN_SEND状态，等待服务器确认；</p></li>
+<li><p><strong>第二次握手</strong>：服务器收到syn包，必须确认客户的syn（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态；</p></li>
+<li><p><strong>第三次握手</strong>：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1)，此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手。</p></li>
+</ul>
+<p><strong>四次握手关闭连接</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/20180717204202563" alt="img"></p>
+<p><strong>TCP的有限状态机</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619173851054.png" alt="image-20210619173851054"></p>
+<h1 id="应用层">6.应用层</h1>
+<p>应用层协议是为了解决某一类应用问题，而问题的解决又是通过位于不同主机中的多个应用进程之间的通信和协同工作完成的。应用层规定了应用进程在通信时所遵循的协议。</p>
+<p>常用网络应用模型：客户/服务器模型、对等模型P2P模型</p>
+<h2 id="域名系统dns">6.1 域名系统DNS</h2>
+<p>因特⽹采⽤层次树状结构的命名⽅法，任何⼀个连接到因特⽹的主机或路由器，都有⼀个唯⼀的层次结构名称，即<strong>域名</strong>。</p>
+<blockquote>
+<p>域名结构</p>
+</blockquote>
+<p>域可以划分为⼦域，⽽⼦域还可以继续划分为⼦域的⼦域，这样就形成了<strong>顶级域，⼆级域，三级域</strong>等。</p>
+<p><strong>域名注意点</strong></p>
+<ul>
+<li><p>标号中的英⽂不区分大小写</p></li>
+<li><p>标号中除连字符（-）外不能使⽤其他的标点符号</p></li>
+<li><p>每个标号不超过63个字符，多标号做成的完整域名最⻓不超过255个字符</p></li>
+<li><p>级别最低的域名写在最左边，级别最⾼的顶级域名写在最右边。</p></li>
+</ul>
+<p><strong>顶级域名分类</strong></p>
+<ul>
+<li><p><strong>国家顶级域名</strong>：如cn，us，uk</p></li>
+<li><p><strong>通⽤顶级域名</strong>：.com（公司），.net（网络服务机构），.org(非营利性组织),.gov(美国政府部⻔)</p></li>
+<li><p><strong>基础机构域名</strong>：这种顶级域名只有⼀个，即arpa，⽤于反向域名解析，因此⼜称反向域名。</p></li>
+</ul>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619201057470.png" alt="image-20210619201057470"></p>
+<blockquote>
+<p>域名服务器</p>
+</blockquote>
+<ul>
+<li><p><strong>根域名服务器</strong>：最⾼层次的域名服务器，==⽤来管辖顶级域，所有的根域名服务器都知道所有的顶级域名服务器的IP地址==。不管是哪个本地域名服务器，若要对因特网上任何⼀个域名进行解析，只要自己无法解析，就首先要求助于根域名服务器只要自己无法解析，就首先要求助于根域名服务器。</p></li>
+<li><p><strong>顶级域名服务器</strong>：==负责管理在该顶级域名服务器注册的所有⼆级域名==。 收到DNS查询请求时，就给出相应的回答（可能是最后的结果，也可能是下⼀步应当查找的域名服务器的IP地址）。</p></li>
+<li><p><strong>授权域名服务器</strong>（<strong>权限域名服务器</strong>）：每台主机都必须在授权域名服务器处登记，为了更加可靠的⼯作，⼀台主机最好⾄少有两个授权域名服务器，==授权域名服务器总能将其管辖的主机名转换为该主机的IP地址==。实际上，许多域名服务器都同时充当本地域名服务器和授权域名服务器。</p></li>
+<li><p><strong>本地域名服务器</strong>：每个因特⽹服务提供者（ISP），或⼀所⼤学，甚⾄⼀所⼤学中</p>
+<p>的各个系，都可以拥有⼀个本地域名服务器。==当⼀台主机发出DNS查询请求时 这个查询请求报⽂就发送给该主机的本地域名服务器==。</p></li>
+</ul>
+<blockquote>
+<p>域名查询</p>
+</blockquote>
+<ul>
+<li>正向解析：把域名映射成IP地址的过程</li>
+<li>反向解析：把IP地址映射成域名的过程</li>
+</ul>
+<p>方式：<strong>递归查询</strong>和<strong>递归与迭代相结合的查询</strong></p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619202139046.png" alt="image-20210619202139046"></p>
+<h2 id="文件传输协议ftptftp">6.2 文件传输协议FTP、TFTP</h2>
+<h3 id="ftp">6.2.1 FTP</h3>
+<p>使用TCP可靠传输</p>
+<blockquote>
+<p>FTP在⼯作时使用两个并⾏的TCP连接</p>
+</blockquote>
+<ul>
+<li><p><strong>控制连接</strong>：服务器监听<strong>21号端⼝</strong>，等待客服连接，建⽴在这个端⼝上的连接控制连接，控制连接⽤来传输控制信息（如连接请求，传送请求等），并且控制信息都以7位ASCII格式传送。FTP客户端发出的传送请求，通过控制连接发送给服务器端的控制进程，但控制连接并不⽤来传送⽂件。</p></li>
+<li><p><strong>数据连接</strong>：主动方式使⽤TCP20端口，被动⽅式由服务器和客户端⾃⾏协商决定。（端口&gt;1024）。 服务器端的控制进程在接受到FTP客户发来的⽂件传输请求后，就创建“数据传送进程”和“数据连接”。 数据连接⽤来连接客服端和服务器端的数据传送进程，数据传送进程实际完成⽂件的传送，在传送完毕后关闭“数据传送据”并结束运行。</p></li>
+</ul>
+<h3 id="tftp">6.2.2 TFTP</h3>
+<ul>
+<li>使用UDP数据报</li>
+<li>TFTP占用内存小，对较小计算机和某些特殊用途的设备很重要。</li>
+</ul>
+<h2 id="远程终端协议telnet">6.3 远程终端协议TELNET</h2>
+<h2 id="万维网www">6.4 万维网WWW</h2>
+<blockquote>
+<p>万维网的内核部分是由三个标准构成的</p>
+</blockquote>
+<ul>
+<li><p><strong>统⼀资源定位符</strong>（URL）：负责标识万维⽹上的各种⽂档，并使每个⽂档在整个万维⽹的范围内具有唯⼀的标识符URL。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619205120129.png" alt="image-20210619205120129"></p></li>
+<li><p><strong>超文本传输协议</strong>（HTTP）：⼀个应⽤层协议，它使⽤TCP链接进行可靠的传输，HTTP是万维网客户程序和服务器之间交互所必需严格遵守的协议。</p>
+<p>==用户浏览页面方法==</p>
+<blockquote>
+<p>输入URL、点击超链接</p>
+<ol type="1">
+<li><p>浏览器分析URL</p></li>
+<li>浏览器向DNS请求解析IP地址</li>
+<li>DNS解析出IP地址</li>
+<li>浏览器与服务器建立TCP连接</li>
+<li>浏览器发出取文件命令</li>
+<li>服务器响应</li>
+<li>释放TCP连接</li>
+<li><p>浏览器显示</p></li>
+</ol>
+</blockquote>
+<ul>
+<li><p><strong>HTTP特点</strong></p>
+<ul>
+<li>HTTP协议是<strong>无状态</strong>的。即同⼀个客户第⼆次访问同⼀个服务器同⼀个客户第⼆次访问同⼀个服务器上的页面时，服务器的响应与第⼀次被访问时的相同。通常使用Cookie加数据库的⽅式来跟踪⽤户的活动。Cookie是存储在用户主机中的文本文件是存储在⽤户主机中的⽂本⽂件，纪录⼀段时间内某用户的访问记录（使⽤识别码识别，如“123456”）。⽬的是提供个性化服务。</li>
+<li>HTTP采⽤TCP作为运输层协议，但<strong>HTTP协议本身是⽆连接</strong>的（通信双⽅在交换在交换HTTPHTTP报⽂之前不需要先建⽴报⽂之前不需要先建立HTTP连接）。</li>
+</ul></li>
+<li><p><strong>HTTP连接方式</strong></p>
+<ul>
+<li><p><strong>持久连接</strong>（Keep-alive）</p>
+<ul>
+<li><p>非流水方式：客户在收到前⼀个响应后才能发出下⼀个请求</p></li>
+<li><p>流水方式：客户每遇到⼀个对象引⽤就⽴即发出⼀个请求，因⽽</p>
+<p>客户可以逐个地连续发出对各个引⽤对象的请求</p></li>
+</ul></li>
+<li><p><strong>非持久连接</strong>(Close)：每个⽹⻚元素对象的传输都需要单独建⽴⼀个</p>
+<p>需要单独建⽴⼀个TCP连接</p></li>
+</ul></li>
+<li><p><strong>报文格式</strong></p>
+<ul>
+<li><p>请求报文：从客户向服务器发送的请求报文</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619210259532.png" alt="image-20210619210259532"></p></li>
+<li><p>响应报文：从服务器到客户的回答</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619210339638.png" alt="image-20210619210339638"></p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>超⽂本标记语言</strong>（HTML）：⼀种⽂档结构的标记语⾔，它使用⼀些约定标记对页⾯上的各种信息、格式进⾏描述。</p></li>
+</ul>
+<h2 id="电子邮件">6.5 电子邮件</h2>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619212325042.png" alt="image-20210619212325042"></p>
+<blockquote>
+<p>电子邮件组成结构</p>
+</blockquote>
+<ul>
+<li>用户代理</li>
+<li>邮件服务器：：发送和接收邮件，向发送⼈报告邮件传送结果。采⽤客服/服务器模式，邮件服务器既可以做服务器端也可以做客户端。</li>
+<li>协议：SMTP（用以发送），POP3（用以接收）</li>
+</ul>
+<blockquote>
+<p>SMTP通信三个阶段</p>
+</blockquote>
+<ul>
+<li><p>连接建立</p>
+<blockquote>
+<p>（1）发送⽅写邮件，并发送给发送⽅邮件服务器，放入邮件服务器的发送缓存中。</p>
+<p>（2）发送方邮件服务器每隔⼀定时间，对缓存中的邮件进行扫描，若有邮件，准备发送。</p>
+<p>（3）使用SMTP协议，使⽤熟知端⼝号25号，与接收⽅邮件服务器建立TCP连接。</p>
+<p>（4）连接建立之后，接收方邮件服务器回复⼀个“220 Service ready”的应答信息。</p>
+<p>（5）SMTP客户会向SMTP服务器发送⼀个“Hello”命令，附上发送方主机名。</p>
+<p>（6）若SMTP服务器有能力接收邮件有能⼒接收邮件，回答“250 OK”； 若SMTP服务器没有能立接收邮件没有能⼒接收邮件，则回答“421 Service not available”。</p>
+<p><img src="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20210619212843371.png" alt="image-20210619212843371"></p>
+</blockquote></li>
+<li><p>邮件传送</p>
+<blockquote>
+<pre><code>                            首先。⽤A表示发送法邮件服务器，B表示接收⽅邮件服务器。
+                
+                        （1）A发送⼀个“MAIL FROM：发送⼈地址”：表示发送⽅电子邮件的地址；
+                
+                        （2）B若准备好 ，返回“250 OK”；否则返回：数字+文件信息说明；⽬的是说明SMTP服务器是否已经准备好接收邮件。 
+                
+                        （3）若A收到了“250 OK”，则A发送 RCTP TO：&lt;收件⼈地址&gt;（可以发送多个RCPT命令）。
+                
+                        （4）每发送⼀个RCTP命令，若收件⼈地址正确，则B返回“250 OK”；若收件⼈地址错误，则B返回“550 No such user here”。⽬的是SMTP服务器确定是否有这个用户。 
+                
+                        （5）A发送⼀个DATA命令，准备要开始传输邮件的内容了。 
+                
+                        （6）B：SMTP服务器同意传输
+                
+                        （7）A：正式传输内容。发送完毕后，发送&lt;CR&gt;&lt;LF&gt;.
+                
+                        （8）B：返回⼀个“250 OK”</code></pre>
+</blockquote></li>
+<li><p>连接释放</p>
+<blockquote>
+<p>（1）邮件发完，SMTP客户发送客户发送QUIT命令，SMTP服务器发“211”，表示同意释放TCP连接。</p>
+</blockquote></li>
+</ul>
+<blockquote>
+<p>SMTP缺点</p>
+</blockquote>
+<ul>
+<li>SMTP不能传送可执⾏⽂件或者其他⼆进制形象。</li>
+<li>SMTP仅限于传送7位ASCII码，不能传送其他非英语国家的文字。</li>
+<li>SMTP服务器会拒绝超过⼀定⻓度的邮件。</li>
+</ul>
+<h2 id="动态主机配置协议dhcpdynamic-host-configuration-protocol">6.6 动态主机配置协议DHCP(Dynamic Host Configuration Protocol)</h2>
+<p>参考：https://blog.csdn.net/zzd_zzd/article/details/88372014</p>
+<p>局域网的网络协议，使用<strong>UDP协议</strong>工作，统一使用两个IANA分配的端口：<strong>67（服务器端）</strong>，<strong>68（客户端）</strong>.DHCP通常被用于<strong>局域网环境</strong>，主要作用是<strong>集中的管理、分配IP地址</strong>，<strong>使client动态的获得IP地址、Gateway地址、DNS服务器地址等信息</strong>，并能够<strong>提升地址的使用率</strong>。简单来说，DHCP就是一个不需要账号密码登录的、自动给内网机器分配IP地址等信息的协议。</p>
+<blockquote>
+<p>报文种类</p>
+</blockquote>
+<ul>
+<li><strong>Discover</strong>(0x01):DHCP客户端在请求IP地址时并不知道DHCP服务器的位置，因此DHCP<strong>客户端会在本地网络内以广播方式发送Discover请求报文，以发现网络中的DHCP服务器</strong>。所有收到Discover报文的DHCP服务器都会发送应答报文，DHCP客户端据此可以知道网络中存在的DHCP服务器的位置。</li>
+<li><strong>Offer</strong>(0x02):DHCP服务器收到Discover报文后，就会在所配置的地址池中查找一个合适的IP地址，加上相应的租约期限和其他配置信息（如网关、DNS服务器等），构造一个Offer报文，发送给DHCP客户端，告知用户本服务器可以为其提供IP地址。但这个报文只是<strong>告诉DHCP客户端可以提供IP地址，最终还需要客户端通过ARP来检测该IP地址是否重复</strong>。</li>
+<li><strong>Request</strong>（0x03） DHCP客户端可能会收到很多Offer请求报文，所以<strong>必须在这些应答中选择一个</strong>。通常是选择第一个Offer应答报文的服务器作为自己的目标服务器，并向该服务器发送一个广播的Request请求报文，通告选择的服务器，希望获得所分配的IP地址。另外，DHCP客户端在成功获取IP地址后，在地址使用租期达到50%时，会向DHCP服务器发送单播Request请求报文请求续延租约，如果没有收到ACK报文，在租期达到87.5%时，会再次发送广播的Request请求报文以请求续延租约。</li>
+<li><strong>ACK</strong>(0x05):DHCP<strong>服务器收到Request请求报文后，根据Request报文中携带的用户MAC来查找有没有相应的租约记录，如果有则发送ACK应答报文，通知用户可以使用分配的IP地址</strong>。</li>
+<li><strong>NAK</strong>(0x06):如果DHCP服务器收到Request请求报文后，没有发现有相应的租约记录或者由于某些原因无法正常分配IP地址，则向DHCP客户端发送NAK应答报文，<strong>通知用户无法分配合适的IP地址</strong>。</li>
+<li><strong>Release</strong>(0x07):当DHCP客户端不再需要使用分配IP地址时（一般出现在客户端关机、下线等状况）就会主动向DHCP服务器发送RELEASE请求报文，告知服务器用户不再需要分配IP地址，<strong>请求DHCP服务器释放对应的IP地址</strong>。</li>
+<li><strong>Decline</strong>(0x04):DHCP客户端收到DHCP服务器ACK应答报文后，通过地址冲突检测发现服务器分配的地址冲突或者由于其他原因导致不能使用，则会向DHCP服务器发送Decline请求报文，<strong>通知服务器所分配的IP地址不可用，以期获得新的IP地址</strong>。</li>
+<li><strong>Inform</strong>(0x08):<strong>DHCP客户端如果需要从DHCP服务器端获取更为详细的配置信息</strong>，则向DHCP服务器发送Inform请求报文；DHCP服务器在收到该报文后，将根据租约进行查找到相应的配置信息后，向DHCP客户端发送ACK应答报文。目前基本上不用了。</li>
+</ul>
+<blockquote>
+<p>工作流程----客户端登录网络</p>
+</blockquote>
+<ul>
+<li><strong>客户机初始化 &amp; 寻找DHCP服务器</strong>（DHCP Discover）：DHCP客户端启动时，计算机发现本机上没有任何IP地址设定，将以广播方式通过UDP 67端口发送DHCP Discover发现信息来寻找DHCP服务器，因为客户机还不知道自己属于哪一个网络，所以封包的源地址为0.0.0.0目的地址为255.255.255.255，向网络发送特定的广播信息。网络上每一台安装了TCP/IP协议的主机都会接收这个广播信息，但只有DHCP服务器才会做出响应。
+<ul>
+<li><strong>DHCP discover</strong>的等待时间预设为1秒，也就是当客户机将第一个DHCP discover封包送出去之后，在1秒之内没有得到回应的话，就会进行第二次DHCP discover广播。若一直没有得到回应，客户机会将这一广播包重新发送四次（以2，4，8，16秒为间隔，加上1-1000毫秒之间随机长度的时间）。如果都没有得到DHCP Server的回应，客户机会从169.254.0.0/16这个自动保留的私有IP地址中选用一个IP地址。并且每隔5分钟重新广播一次，如果收到某个服务器的响应，则继续IP租用过程。</li>
+</ul></li>
+<li><strong>分配IP地址 &amp; 提供IP地址租用</strong>（DHCP Offer）：DHCP服务器收到客户端发出的DHCP discover广播后，通过解析报文，查询dhcpd.conf配置文件。它会从那些还没有租出去的地址中，选择最前面的空置IP，连同其它TCP/IP设定，通过UDP 68端口响应给客户端一个DHCP offer数据包（包中包含IP地址、子网掩码、地址租期等信息）。告诉DHCP客户端，该DHCP服务器拥有资源，可以提供DHCP服务。
+<ul>
+<li>此时还是使用广播进行通讯，源IP地址为DHCP服务器的IP地址，目标地址为255.255.255.255。同时，DHCP服务器为此客户端保留它提供的IP地址，从而不会为其他DHCP客户分配此IP地址。</li>
+<li>由于客户端在开始的时候还没有IP地址，所以在其DHCP discover封包内会带有其MAC地址信息，并且有一个XID编号来辨别该封包，DHCP服务器响应的DHCP offer封包则会根据这些资料传递给要求租约的客户。</li>
+</ul></li>
+<li><strong>接受IP地址 &amp; 接受IP租约</strong>（DHCP Request）：DHCP客户端接受到DHCP offer提供信息之后，如果客户机收到网络上多台DHCP服务器的响应，一般是最先到达的那个，然后以广播的方式回答一个DHCP request数据包（包中包含客户端的MAC地址、接受的租约中的IP地址、提供此租约的DHCP服务器地址等）。告诉所有DHCP服务器它将接受哪一台服务器提供的IP地址，所有其他的DHCP服务器撤销它们的提供以便将IP地址提供给下一次IP租用请求。
+<ul>
+<li>此时，由于还没有得到DHCP服务器的最后确认，客户端仍然使用0.0.0.0为源IP地址，255.255.255.255为目标地址进行广播。</li>
+<li>事实上，并不是所有DHCP客户端都会无条件接受DHCP服务器的offer，特别是如果这些主机上安装有其它TCP/IP相关的客户机软件。客户端也可以用DHCP request向服务器提出DHCP选择，这些选择会以不同的号码填写在DHCP Option Field里面。客户机可以保留自己的一些TCP/IP设定。</li>
+</ul></li>
+<li><strong>IP地址分配确认 &amp; 租约确认</strong>（DHCP Ack）：当DHCP服务器接收到客户机的DHCP request之后，会广播返回给客户机一个DHCP ack消息包，表明已经接受客户机的选择，告诉DHCP客户端可以使用它提供的IP地址。并将这一IP地址的合法租用以及其他的配置信息都放入该广播包发给客户机。
+<ul>
+<li>客户端在接收到DHCP ack广播后，会向网络发送三个针对此IP地址的ARP解析请求以执行冲突检测，查询网络上有没有其它机器使用该IP地址；如果发现该IP地址已经被使用，客户机会发出一个DHCP decline数据包给DHCP服务器，拒绝此IP地址租约，并重新发送DHCP discover信息。此时，在DHCP服务器管理控制台中，会显示此IP地址为BAD_ADDRESS。</li>
+<li>如果网络上没有其它主机使用此IP地址，则客户机的TCP/IP使用租约中提供的IP地址完成初始化，从而可以和其他网络中的主机进行通讯。</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>工作流程----客户端重新登录</p>
+</blockquote>
+<ul>
+<li><strong>重新登录</strong>：以后DHCP客户端每次重新登录网络时，就不需要再发送DHCP discover发现信息了，而是直接发送包含前一次所分配的IP地址的DHCP request请求信息。当DHCP服务器收到这一信息后，它会尝试让DHCP客户机继续使用原来的IP地址，并回答一个DHCP ack确认信息。如果此IP地址已无法再分配给原来的DHCP客户端使用时，则DHCP服务器给DHCP客户端回答一个DHCP nack否认信息。当原来的DHCP客户机收到此DHCP nack否认信息后，它就必须重新发送DHCP discover发现信息来请求新的IP地址。</li>
+</ul>
+<blockquote>
+<p>工作流程----客户端离线</p>
+</blockquote>
+<ul>
+<li><strong>更新租约</strong>：DHCP服务器向DHCP客户机出租的IP地址一般都有一个租借期限，期满后DHCP服务器便会收回出租的IP地址。如果DHCP客户机要延长其IP租约，则必须更新其IP租约。
+<ul>
+<li>客户端会在租期过去50%的时候，直接向为其提供IP地址的DHCP服务器发送DHCP request消息包。如果客户端接收到该服务器回应的DHCP ack消息包，客户端就根据包中所提供的新的租期以及其它已经更新的TCP/IP参数，更新自己的配置，IP租用更新完成。如果没有收到该服务器的回复，则客户端继续使用现有的IP地址，因为当前租期还有50%。</li>
+<li>如果在租期过去50%的时候没有更新，则客户端将在租期过去87.5%的时候再次向为其提供IP地址的DHCP联系。如果还不成功，到租约的100%时候，客户端必须放弃这个IP地址，重新申请。如果此时无DHCP可用，客户端会使用169.254.0.0/16中随机的一个地址，并且每隔5分钟再进行尝试。</li>
+</ul></li>
+</ul>
+<h2 id="简单网络管理协议snmp">6.7 简单网络管理协议SNMP</h2>
+<h2 id="应用进程跨越网络的通信">6.8 应用进程跨越网络的通信</h2>
+<h2 id="p2p应用">6.9 P2P应用</h2>
+<p>腾讯QQ：信息接收方在线时P2P，离线时C/S</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/" rel="tag"><i class="fa fa-tag"></i> 计算机专业课</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/27/%E7%BC%96%E7%A8%8B/python/python%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%93%E4%B8%9A%E8%AF%BE/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="next" title="操作系统基础知识">
+      操作系统基础知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">1.概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9C%A8%E4%BF%A1%E6%81%AF%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-text">1.1 计算机网络在信息时代的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E6%A6%82%E8%BF%B0"><span class="nav-text">1.2 互联网概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E7%BB%84%E6%88%90"><span class="nav-text">1.3 互联网组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9C%A8%E6%88%91%E5%9B%BD%E7%9A%84%E5%8F%91%E5%B1%95"><span class="nav-text">1.4 计算机网络在我国的发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%88%86%E7%B1%BB"><span class="nav-text">1.5 计算机网络分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD"><span class="nav-text">1.6 计算机网络性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">1.7 计算机网络体系结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-text">2.物理层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">2.1 基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">2.2 数据通信基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E4%B8%8B%E9%9D%A2%E7%9A%84%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93"><span class="nav-text">2.3 物理层下面的传输媒体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E9%81%93%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF"><span class="nav-text">2.4 信道复用技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E4%BC%A0%E8%BE%93%E7%B3%BB%E7%BB%9F"><span class="nav-text">2.5 数字传输系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%BD%E5%B8%A6%E6%8E%A5%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-text">2.6 宽带接入技术</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-text">3. 数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E4%BF%A1%E9%81%93%E5%8F%8A%E5%8D%8F%E8%AE%AE"><span class="nav-text">3.1 点对点信道及协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E4%BF%A1%E9%81%93"><span class="nav-text">3.1.1 点对点信道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ppp%E5%8D%8F%E8%AE%AE"><span class="nav-text">3.1.2 PPP协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E5%8F%8A%E5%8D%8F%E8%AE%AE"><span class="nav-text">3.2 广播信道及协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93"><span class="nav-text">3.2.1 广播信道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-text">3.2.2 以太网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-text">3.2.3 扩展的局域网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-text">3.2.4 高速以太网</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-text">4. 网络层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AEip"><span class="nav-text">4.1 网际协议IP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE-arp-%E5%92%8C%E9%80%86%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE-rarp"><span class="nav-text">4.2 地址解析协议 ARP 和逆地址解析协议 RARP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%99%85%E6%8E%A7%E5%88%B6%E6%8A%A5%E6%96%87%E5%8D%8F%E8%AE%AEicmp"><span class="nav-text">4.3 网际控制报文协议ICMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE"><span class="nav-text">4.4 因特网的路由选择协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ip%E5%A4%9A%E6%92%AD"><span class="nav-text">4.5 IP多播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E4%B8%93%E7%94%A8%E7%BD%91-vpn-%E5%92%8C%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2-nat"><span class="nav-text">4.6 虚拟专用网 VPN 和网络地址转换 NAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv6"><span class="nav-text">4.7 IPv6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82"><span class="nav-text">5.运输层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0"><span class="nav-text">5.1 运输层协议概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AEudp"><span class="nav-text">5.2 用户数据报协议UDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AEtcp"><span class="nav-text">5.3 传输控制协议TCP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-text">6.应用层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9Fdns"><span class="nav-text">6.1 域名系统DNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AEftptftp"><span class="nav-text">6.2 文件传输协议FTP、TFTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ftp"><span class="nav-text">6.2.1 FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tftp"><span class="nav-text">6.2.2 TFTP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E7%BB%88%E7%AB%AF%E5%8D%8F%E8%AE%AEtelnet"><span class="nav-text">6.3 远程终端协议TELNET</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%87%E7%BB%B4%E7%BD%91www"><span class="nav-text">6.4 万维网WWW</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="nav-text">6.5 电子邮件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E5%8D%8F%E8%AE%AEdhcpdynamic-host-configuration-protocol"><span class="nav-text">6.6 动态主机配置协议DHCP(Dynamic Host Configuration Protocol)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86%E5%8D%8F%E8%AE%AEsnmp"><span class="nav-text">6.7 简单网络管理协议SNMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E8%B7%A8%E8%B6%8A%E7%BD%91%E7%BB%9C%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-text">6.8 应用进程跨越网络的通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p2p%E5%BA%94%E7%94%A8"><span class="nav-text">6.9 P2P应用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨泽康"
+      src="/images/langke.jpg">
+  <p class="site-author-name" itemprop="name">杨泽康</p>
+  <div class="site-description" itemprop="description">小码农</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yang-ze-kang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yang-ze-kang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/The_Only_God?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;The_Only_God?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨泽康</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">211k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:24</span>
+
+</div>
+<div class="">
+ <span id="sitetime">本站</span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2021,10,15,15,00,00); //北京时间2018-2-13 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 本站已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}
+	siteTime();
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bUV8Ys1tsuMtJC5RGlflJnnU-gzGzoHsz',
+      appKey     : 'VbR5JkUrxVKTT8cv1SVABqQ1',
+      placeholder: "快输入你的评论吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  
+	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.85}});</script></body>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<!-- <script src="/lib/live2d-widget/autoload.js"></script>
+</html> -->

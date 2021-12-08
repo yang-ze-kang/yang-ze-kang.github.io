@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content=xkzCujq5paJiY3gT>
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Those who wish to succeed must ask the right preliminary question.  ——Aristole">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【数字图像处理】第2章 数字图像基础">
+<meta property="og:url" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="杨泽康的博客">
+<meta property="og:description" content="Those who wish to succeed must ask the right preliminary question.  ——Aristole">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117152243277.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117162314602.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117163247532.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092922336.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092940844.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092957725.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118104620361.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118105618667.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118111616720.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118111851177.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118114257586.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118162005713.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118171711689.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122204719742.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122222113297.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122222129458.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122223345883.png">
+<meta property="og:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211123090318748.png">
+<meta property="article:published_time" content="2021-11-17T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-07T10:17:04.946Z">
+<meta property="article:author" content="杨泽康">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="数字图像处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117152243277.png">
+
+<link rel="canonical" href="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【数字图像处理】第2章 数字图像基础 | 杨泽康的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨泽康的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/langke.jpg">
+      <meta itemprop="name" content="杨泽康">
+      <meta itemprop="description" content="小码农">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨泽康的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【数字图像处理】第2章 数字图像基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-17 08:00:00" itemprop="dateCreated datePublished" datetime="2021-11-17T08:00:00+08:00">2021-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-07 18:17:04" itemprop="dateModified" datetime="2021-12-07T18:17:04+08:00">2021-12-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">数字图像处理</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/" class="post-meta-item leancloud_visitors" data-flag-title="【数字图像处理】第2章 数字图像基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+            <div class="post-description">Those who wish to succeed must ask the right preliminary question.  ——Aristole</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="视觉感知要素">2.1 视觉感知要素</h1>
+<h2 id="人眼的结构">2.1.1 人眼的结构</h2>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117152243277.png"></p>
+<p><strong>角膜：</strong>硬而透明的组织，覆盖着眼睛的前表面。</p>
+<p><strong>巩膜：</strong>与角膜相连的、包围眼球其余部分的、不透明的膜。</p>
+<p><strong>脉络膜：</strong>包含有血管网，是眼睛的重要滋养源。脉络膜的最前面分为睫状体和虹膜。</p>
+<p><strong>虹膜：</strong>虹膜的收缩和扩张控制（2~8mm）着进入眼睛的光亮。</p>
+<p><strong>晶状体：</strong> 由同心纤维细胞层组成，并由附在睫状体上的纤维悬挂。通过收缩来改变视线的焦距。</p>
+<p><strong>视网膜：</strong>布满了整个后部的内壁。眼睛适当聚焦时，来自眼睛外部的物体在视网膜成像。之后通过分布在其上的感受器（锥状体、杆状体）形成图案。除了盲点外，感受器的分布关于中央凹径向对称。</p>
+<p><strong>锥状体：</strong>数量约为600~700万个。主要位于视网膜中成为中央凹的中间部分。对颜色高度敏感，每个锥状体都连接到了自身的神经末梢，可以充分地分辨图像的细节。肌肉可以控制眼球的转动，直到感兴趣的物体落到中央凹上。锥状体视觉称为白昼视觉或亮视觉。</p>
+<p><strong>杆状体：</strong>7500~15000万个。分布在视网膜表面。几个杆状体连接到一个神经末梢。用来给出视野内的总体图像，没有色彩感觉，对低照明度敏感。杆状体视觉成为暗视觉或微光视觉。</p>
+<h2 id="眼睛中图像的形成">2.1.2 眼睛中图像的形成</h2>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117162314602.png"></p>
+<p>晶状体和成像区域（视网膜）间距离固定，正常聚焦的焦距通过改变晶状体的形状来得到。在远离或接近目标时，睫状体中的纤维会分别压扁或加厚晶状体。</p>
+<h2 id="亮度适应和辨别">2.1.3 亮度适应和辨别</h2>
+<p><strong>主观亮度：</strong>由人的视觉系统感知的亮度，是进入人眼的光强的对数函数。</p>
+<p><strong>亮度适应现象：</strong>视觉系统不能同时在一个范围内工作，它是通过不断改变整个灵敏度来完成这一较大变动的。</p>
+<p><strong>感知亮度不是强度的简单函数。</strong></p>
+<ul>
+<li><p>马赫带效应：视觉系统往往会在不同强度区域的边界处出现“下冲”或“上冲”现象。</p></li>
+<li><p>同时对比现象：所有中心方块都有完全相同的亮度，然而，随着背景变得更亮，他们在眼睛里会变得更暗。</p></li>
+</ul>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211117163247532.png"></p>
+<p>人类感知现象的其他例子：错觉。</p>
+<h1 id="光和电磁波谱">2.2 光和电磁波谱</h1>
+<p><strong>更高频率的电磁现象的每个光子携带更多的能量。</strong> <span class="math display">\[
+\lambda = c/v \\
+E=hv
+\]</span> <strong>单色光：</strong>没有颜色的光。唯一属性是其强度（灰度级）。单色图像常称为灰度图像。</p>
+<p><strong>彩色光：</strong>电磁能谱的跨越范围为<span class="math inline">\(0.43\mu m\sim0.79\mu m\)</span></p>
+<ul>
+<li>发光强度：从光源流出的能量总量，通常用瓦特度量。</li>
+<li>光通量：人眼所感受到的辐射功率（单位时间内某一波段的辐射能量和该波段的相对视见率的乘积），人眼对不同波长光的相对视见率不同。单位为流明数。</li>
+<li>亮度：光感知的主观描绘子。</li>
+</ul>
+<p><strong>给某物体成像，要选取波长小于物体尺寸的电磁波。</strong></p>
+<h1 id="图像的感知与获取">2.3 图像的感知与获取</h1>
+<h2 id="图像的能量的获取">2.3.1 图像的能量的获取</h2>
+<p>多数图像都是由“照射”源和形成图像的“场景”元素对光的反射或透射而产生的。</p>
+<ul>
+<li>照射可能由电磁能源引起（如雷达、红外线或X射线系统），也可以由非传统光源（如电磁波）甚至由计算机产生的照射模式产生。</li>
+<li>场景元素可能是熟悉的物体，也可能是分子、沉积岩或人类的大脑。</li>
+</ul>
+<p>反射能或透射能可聚焦到一个光转换器上，光转换器再把能量转换为可见光。</p>
+<h2 id="图像能量的数字化">2.3.2 图像能量的数字化</h2>
+<p>传感器可以将照射能量转换为数字图像，每个传感器可以得到一个数字量，可以有如下三种方式生成数字图像：</p>
+<ul>
+<li><p>使用单个传感器获取图像</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092922336.png"></p></li>
+<li><p>使用条带传感器获取图像</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092940844.png"></p></li>
+<li><p>使用传感器阵列获取图像</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118092957725.png"></p></li>
+</ul>
+<h2 id="简单的图像形成模型">2.3.3 简单的图像形成模型</h2>
+<p><span class="math display">\[
+f(x,y)=i(x,y)r(x,y) \tag1
+\]</span> <span class="math display">\[
+0&lt;i(x,y)&lt;\infty \tag2
+\]</span> <span class="math display">\[
+0&lt;r(x,y)&lt;1 \tag3
+\]</span> <span class="math display">\[
+l = f(x_0,y_0) \tag4
+\]</span> <span class="math display">\[
+L_{min} &lt; l &lt; L_{max} \tag5
+\]</span></p>
+<p>(1)表示图像的亮度值由两个分量来组成：</p>
+<ul>
+<li>入射到被观察场景的光源照射总量</li>
+<li>场景中所反射/透射的光照总量</li>
+</ul>
+<p>(2)表示照射源所辐射的能量是非零的、有限的</p>
+<p>(3)表示反射/透射分量限制在全吸收0和全反射1之间</p>
+<p>(5)区间<span class="math inline">\([L_{min},L_{max}]\)</span>成为灰度级</p>
+<h1 id="图像取样和量化">2.4 图像取样和量化</h1>
+<p>把连续的感知数据转换为数字形式。</p>
+<h2 id="取样和量化的基本概念">2.4.1 取样和量化的基本概念</h2>
+<p>一幅图像的x和y坐标及幅度值可能都是连续的，为将它转换为数字形式，必须对坐标进行取样操作。对坐标值进行数字化成为<strong>取样</strong>，对幅值数字化成为<strong>量化</strong>。</p>
+<p>实践中，取样方法由用于生成该图像的传感器配置决定。</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118104620361.png"></p>
+<h2 id="数字图像表示">2.4.2 数字图像表示</h2>
+<p>表示方法</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118105618667.png"></p>
+<p>图像系统的<strong>动态范围</strong>：系统中最大可度量灰度与最小可检测灰度之比。原则上，上限取决于饱和度，下限取决于噪声。</p>
+<p>图像<strong>对比度</strong>：一幅图像中最高和最低灰度级间的灰度差。</p>
+<h2 id="空间和灰度分辨率">2.4.3 空间和灰度分辨率</h2>
+<p><strong>空间分辨率：</strong>图像中可辨别的最小细节的度量。</p>
+<ul>
+<li>单位距离的线对数：假设用交替出现的黑色和白色垂线来构造一幅图形，线宽为<span class="math inline">\(W\)</span>，则线对宽度为<span class="math inline">\(2W\)</span>，单位距离内由<span class="math inline">\(\frac{1}{2W}\)</span>个线对。</li>
+<li>单位距离的点数（像素数）：印刷和出版行业中常用的图像分辨率的度量。（美国常用每英寸点数dpi）</li>
+</ul>
+<p><strong>灰度分辨率：</strong>灰度级中可分辨的最小变化。指的是用于量化灰度的比特数。</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118111616720.png"></p>
+<p>一些研究者试图通过同时改变空间分辨率和灰度分辨率来量化对图像质量产生的影响：</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118111851177.png"></p>
+<p>结论：</p>
+<ul>
+<li>对于有大量细节的图像，可能只需要较少的灰度级。</li>
+<li>灰度分辨率减小倾向于对比度的增加，人们通常感觉到图像质量改善的效果。</li>
+</ul>
+<h2 id="图像内插">2.4.4 图像内插</h2>
+<p>内插是在诸如图像放大、收缩、旋转和几何校正等任务中广泛应用的基本工具。</p>
+<blockquote>
+<p>最近邻内插</p>
+</blockquote>
+<p>放大后图像与原图具有相同的像素间隔，将放大后的图像缩小到与原图大小相等（像素间隔变小），再在原图中找位置距离最近的像素点赋到该位置，最后再将图像放大到原大小。</p>
+<blockquote>
+<p>双线性内插</p>
+</blockquote>
+<p>上面的是用原图上的一个点去确定新位置的灰度，而这个方法使用4个最近邻去估计给定位置的灰度。</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118114257586.png"> <span class="math display">\[
+f(x,y)=(1-x)(1-y)f(0,0)+x(1-y)f(0,1)+(1-x)yf(1,0)+xyf(1,1)
+\]</span></p>
+<blockquote>
+<p>双三次内插</p>
+</blockquote>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118162005713.png"> <span class="math display">\[
+f(x,y)=\sum_{i=0}^{3}\sum_{i=0}^3f(i,j)W(x-i)W(y-j) \\
+W(x) = 
+\begin{cases}
+(a+2)|x|^3-(a+3)|x|^2+1 &amp; |x|\le 1 \\
+a|x|^3-5a|x|^2+8a|x|-4a &amp; 1&lt;|x|&lt;2 \\
+0 &amp;其他
+\end{cases} \\
+其中a取-0.5
+\]</span></p>
+<h1 id="像素间的一些基本关系">2.5 像素间的一些基本关系</h1>
+<h2 id="相邻像素">2.5.1 相邻像素</h2>
+<p>位于坐标(x,y)的像素的：</p>
+<ul>
+<li>4邻域像素坐标为：(x+1,y),(x-1,y),(x,y+1),(x,y-1)</li>
+<li>8邻域像素坐标为：(x-1,y-1),(x-1,y),(x-1,y+1),(x,y-1),(x,y+1),(x+1,y-1),(x+1,y),(x+1,y+1)</li>
+</ul>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211118171711689.png"></p>
+<h2 id="邻接性连通性区域和边界">2.5.2 邻接性、连通性、区域和边界</h2>
+<blockquote>
+<p>邻接类型</p>
+</blockquote>
+<ul>
+<li>4邻接：q在集合<span class="math inline">\(\text{N}_4\text{(p)}\)</span>中，则具有V中数值的两个像素p和q是4邻接的。</li>
+<li>8邻接：q在集合<span class="math inline">\(\text{N}_8\text{(p)}\)</span>中，则具有V中数值的两个像素p和q是8邻接的。</li>
+<li>m邻接（混合邻接）：如果q在<span class="math inline">\(\text{N}_4\text{(p)}\)</span>中，或q在<span class="math inline">\(\text{N}_D\text{(p)}\)</span>中，且集合<span class="math inline">\(\text{N}_4\text{(p)} \cap \text{N}_4\text{(q)}\)</span>中没有来自V中数值的元素，则具有V中数值的两个像素p和q是m邻接的。</li>
+</ul>
+<blockquote>
+<p>连通性</p>
+</blockquote>
+<p><strong>连通分量</strong>：对于S中任何像素p，S中连通到该像素的像素集称为S的连通分量。</p>
+<p><strong>连通集：</strong>如果S仅有一个连通分量，则称S为连通集。</p>
+<p><strong>区域：</strong>R为图像中一个像素子集，如果R是连通集，则称R为一个区域。</p>
+<p><strong>邻接区域：</strong>两个区域，如果它们联合形成一个连通集，则称它们为邻接区域。（需指定邻接类型）</p>
+<p><strong>图像的前景/背景：</strong>所有不连接区域的并集称为<strong>图像的前景</strong>，其余部分的点集称为<strong>图像的背景</strong>。</p>
+<p><strong>边界（内边界）：</strong>区域R的边界（边缘/轮廓）上的点与R的补集中的点邻近。</p>
+<h2 id="距离度量">2.5.3 距离度量</h2>
+<blockquote>
+<p>距离函数/度量</p>
+</blockquote>
+<ul>
+<li><span class="math inline">\(D(p,q)\ge0 \quad [D(p,q)=0,当且仅当p=q]\)</span></li>
+<li><span class="math inline">\(D(p,q)=D(q,p)\)</span></li>
+<li><span class="math inline">\(D(p,z)\le D(p,q)+D(q,z)\)</span></li>
+</ul>
+<blockquote>
+<p>欧几里得（欧氏）距离</p>
+</blockquote>
+<p><span class="math display">\[
+D_e(p,q)=[(x-s)^2+(y-t)^2]^{\frac{1}{2}}
+\]</span></p>
+<blockquote>
+<p>城市街区距离</p>
+</blockquote>
+<p><span class="math display">\[
+D_4(p,q)=|x-s|+|y-t|
+\]</span></p>
+<blockquote>
+<p>棋盘距离</p>
+</blockquote>
+<p><span class="math display">\[
+D_8(p,q)=max(|x-s|,|y-t|)
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(D_m\)</span>距离</p>
+</blockquote>
+<p>两点间的<span class="math inline">\(D_m\)</span>距离为两点间最短m通路的长度。</p>
+<h1 id="数字图像处理中所用数学工具介绍">2.6 数字图像处理中所用数学工具介绍</h1>
+<h2 id="阵列与矩阵操作">2.6.1 阵列与矩阵操作</h2>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122204719742.png"></p>
+<h2 id="线性操作与非线性操作">2.6.2 线性操作与非线性操作</h2>
+<p>如果： <span class="math display">\[
+H[a_if_i(x,y)+a_jf_j(x,y)]=a_iH[f_i(x,y)]+a_jH[f_j(x,y)]
+\]</span> 则H为一个线性算子</p>
+<ul>
+<li>加性：对两个输入的和进行操作与分别对输入进行操作再求和得到的结果相同。</li>
+<li>同质性：对乘以常数的输入进行操作与先对输入进行操作再乘以常数的结果相同。</li>
+</ul>
+<p>线性操作时图像处理大量理论和实践结果的基础。</p>
+<p>非线性操作系统很难被很好的理解，但一些非线性操作的性能优于线性操作。</p>
+<h2 id="算术操作">2.6.3 算术操作</h2>
+<p><span class="math display">\[
+\begin{align*}
+s(x,y)=f(x,y)+g(x,y) \\
+s(x,y)=f(x,y)-g(x,y) \\
+s(x,y)=f(x,y)\times g(x,y) \\
+s(x,y)=f(x,y)\div g(x,y)
+\end{align*}
+\]</span></p>
+<ul>
+<li>加：求多幅图像的对应点像素的均值来去噪。</li>
+<li>减：增强图像差别。</li>
+<li>乘：校正阴影、模板操作。</li>
+<li>除：校正阴影。</li>
+</ul>
+<h2 id="集合和逻辑操作">2.6.4 集合和逻辑操作</h2>
+<ol type="1">
+<li><p>集合操作</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122222113297.png"></p></li>
+<li><p>逻辑操作</p>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122222129458.png"></p></li>
+<li><p>模糊集合：使用隶属度函数来定义不同类别间逐渐过渡的值。</p></li>
+</ol>
+<h2 id="空间操作">2.6.5 空间操作</h2>
+<ol type="1">
+<li><p>单像素操作：以灰度为基础改变单个像素的值。</p></li>
+<li><p>邻域操作：输出图像某一点的像素值由输入图像某一点邻域的像素集合的值确定。</p></li>
+<li><p>几何变换：橡皮膜变换，由坐标的空间变换和灰度内插组成，变换方法有前向映射和反向映射。</p>
+<p>放射变换：<span class="math inline">\(T\)</span>为放射矩阵 <span class="math display">\[
+[x\quad y\quad 1]=[v\quad w\quad1]T=[v\quad w\quad 1]
+\left [\begin{matrix}
+t_{11} &amp; t_{12} &amp; 0 \\
+t_{21} &amp; t_{22} &amp; 0 \\
+t_{31} &amp; t_{32} &amp; 1 
+\end{matrix} \right ]
+\]</span> <img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211122223345883.png"></p></li>
+<li><p>图像配准：用于对齐两幅或多幅场景相同的图像，主要方法为使用约束点。</p>
+<p>基于双线性近似的简单模型： <span class="math display">\[
+\begin{align*}
+x=c_1v+c_2w+c_3vw+c_4\\
+y=c_5v+c_6w+c_7vw+c_8
+\end{align*}
+\]</span></p></li>
+<li></li>
+</ol>
+<h2 id="向量和矩阵操作">2.6.6 向量和矩阵操作</h2>
+<p><span class="math display">\[
+\begin{align*}
+w=A(z-a)\\
+A为大小为m\times n的矩阵,z和a位n\times&amp; 1大小的列向量 \\
+\end{align*}
+\]</span></p>
+<p>在求解大量数字图像时，可以把一幅<span class="math inline">\(M\times N\)</span>的图像描述为一个<span class="math inline">\(MN\times 1\)</span>维向量： <span class="math display">\[
+g=Hf+n
+\]</span> <span class="math inline">\(f表示输入图像的MN\times 1的向量\)</span></p>
+<p><span class="math inline">\(n表示一个M\times N噪声模式的MN\times 1向量\)</span></p>
+<p><span class="math inline">\(g表示处理后图像的MN\times1向量\)</span></p>
+<p><span class="math inline">\(H是用于对输入图像进行线性处理的MN\times MN矩阵\)</span></p>
+<h2 id="图像变换">2.6.7 图像变换</h2>
+<p><img src="/2021/11/17/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E3%80%90%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E7%AC%AC2%E7%AB%A0%20%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/image-20211123090318748.png"></p>
+<p><span class="math display">\[
+\begin{align*}
+T(u,v)=\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x,y)r(x,y,u,v) \\
+f(x,y)=\sum_{u=0}^{v-1}\sum_{y=0}^{N-1}T(u,v)s(x,y,u,v) \\
+\end{align*}
+\]</span></p>
+<p><span class="math display">\[
+r(x,y,u,v)称为正变换核，s(x,y,u,v)称为反变换核
+\]</span></p>
+<p>如果<span class="math inline">\(r(x,y,u,v)=r_1(x,u)r_2(y,v)\)</span>则称变换核是<strong>可分的</strong>。另外如果<span class="math inline">\(r_1(x,y)=r_2(x,y)\)</span>则称变换核是对称的。</p>
+<p>如果变换对的正、反变换核是可分的和对称的，且<span class="math inline">\(f(x,y)\)</span>为大小为<span class="math inline">\(M\times M\)</span>的方形图像则： <span class="math display">\[
+\begin{align*}
+T&amp;=AFA \\
+BTB&amp;=BAFAB
+\end{align*}
+\]</span> 如果<span class="math inline">\(B=A^{-1}\)</span>，则： <span class="math display">\[
+F=BTB
+\]</span> 否则： <span class="math display">\[
+\hat{F}=BAFAB
+\]</span></p>
+<h2 id="概率方法">2.6.8 概率方法</h2>
+<p><span class="math display">\[
+\begin{align*}
+灰度级出现概率：p(z_k)&amp;=\frac{n_k}{MN},且\sum_{k=0}^{L-1}p(z_k)=1 \\
+平均灰度：m&amp;=\sum_{k=0}^{L-1}z_kp(z_k) \\
+灰度的方差：\sigma^2&amp;=\sum_{k=0}^{L-1}(z_k-m)^2p(z_k)
+\end{align*}
+\]</span></p>
+<p><strong>灰度值方差是关于均值的展开度的度量，因此它是对象对比度的有用度量。</strong></p>
+<p><strong>参考资料</strong></p>
+<p>[1] <a target="_blank" rel="noopener" href="https://book.douban.com/subject/6434627/">数字图像处理</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/pj18862486309/article/details/107739930">图像内插</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" rel="tag"><i class="fa fa-tag"></i> 计算机视觉</a>
+              <a href="/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 数字图像处理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Fully%20Convolutional%20Networks%20for%20Semantic%20Segmentation/" rel="prev" title="【论文阅读】Fully Convolutional Networks for Semantic Segmentationdate">
+      <i class="fa fa-chevron-left"></i> 【论文阅读】Fully Convolutional Networks for Semantic Segmentationdate
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/17/%E7%BC%96%E7%A8%8B/conda%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="conda常用命令">
+      conda常用命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E8%A6%81%E7%B4%A0"><span class="nav-text">2.1 视觉感知要素</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E7%9C%BC%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-text">2.1.1 人眼的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%BC%E7%9D%9B%E4%B8%AD%E5%9B%BE%E5%83%8F%E7%9A%84%E5%BD%A2%E6%88%90"><span class="nav-text">2.1.2 眼睛中图像的形成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%AE%E5%BA%A6%E9%80%82%E5%BA%94%E5%92%8C%E8%BE%A8%E5%88%AB"><span class="nav-text">2.1.3 亮度适应和辨别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%89%E5%92%8C%E7%94%B5%E7%A3%81%E6%B3%A2%E8%B0%B1"><span class="nav-text">2.2 光和电磁波谱</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E7%9A%84%E6%84%9F%E7%9F%A5%E4%B8%8E%E8%8E%B7%E5%8F%96"><span class="nav-text">2.3 图像的感知与获取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E7%9A%84%E8%83%BD%E9%87%8F%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-text">2.3.1 图像的能量的获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E8%83%BD%E9%87%8F%E7%9A%84%E6%95%B0%E5%AD%97%E5%8C%96"><span class="nav-text">2.3.2 图像能量的数字化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E5%9B%BE%E5%83%8F%E5%BD%A2%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="nav-text">2.3.3 简单的图像形成模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%8F%96%E6%A0%B7%E5%92%8C%E9%87%8F%E5%8C%96"><span class="nav-text">2.4 图像取样和量化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E6%A0%B7%E5%92%8C%E9%87%8F%E5%8C%96%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">2.4.1 取样和量化的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E8%A1%A8%E7%A4%BA"><span class="nav-text">2.4.2 数字图像表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%92%8C%E7%81%B0%E5%BA%A6%E5%88%86%E8%BE%A8%E7%8E%87"><span class="nav-text">2.4.3 空间和灰度分辨率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%86%85%E6%8F%92"><span class="nav-text">2.4.4 图像内插</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%83%8F%E7%B4%A0%E9%97%B4%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E5%85%B3%E7%B3%BB"><span class="nav-text">2.5 像素间的一些基本关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E9%82%BB%E5%83%8F%E7%B4%A0"><span class="nav-text">2.5.1 相邻像素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%BB%E6%8E%A5%E6%80%A7%E8%BF%9E%E9%80%9A%E6%80%A7%E5%8C%BA%E5%9F%9F%E5%92%8C%E8%BE%B9%E7%95%8C"><span class="nav-text">2.5.2 邻接性、连通性、区域和边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-text">2.5.3 距离度量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E4%B8%AD%E6%89%80%E7%94%A8%E6%95%B0%E5%AD%A6%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D"><span class="nav-text">2.6 数字图像处理中所用数学工具介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B5%E5%88%97%E4%B8%8E%E7%9F%A9%E9%98%B5%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.1 阵列与矩阵操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%93%8D%E4%BD%9C%E4%B8%8E%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.2 线性操作与非线性操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.3 算术操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%92%8C%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.4 集合和逻辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.5 空间操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5%E6%93%8D%E4%BD%9C"><span class="nav-text">2.6.6 向量和矩阵操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2"><span class="nav-text">2.6.7 图像变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E6%96%B9%E6%B3%95"><span class="nav-text">2.6.8 概率方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨泽康"
+      src="/images/langke.jpg">
+  <p class="site-author-name" itemprop="name">杨泽康</p>
+  <div class="site-description" itemprop="description">小码农</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yang-ze-kang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yang-ze-kang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/The_Only_God?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;The_Only_God?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="fab fa-csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨泽康</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">211k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:24</span>
+
+</div>
+<div class="">
+ <span id="sitetime">本站</span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2021,10,15,15,00,00); //北京时间2018-2-13 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 本站已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}
+	siteTime();
+</script>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bUV8Ys1tsuMtJC5RGlflJnnU-gzGzoHsz',
+      appKey     : 'VbR5JkUrxVKTT8cv1SVABqQ1',
+      placeholder: "快输入你的评论吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  
+	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.85}});</script></body>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<!-- <script src="/lib/live2d-widget/autoload.js"></script>
+</html> -->
