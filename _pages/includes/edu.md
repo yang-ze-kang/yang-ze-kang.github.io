@@ -1,12 +1,21 @@
 # 📖 Educations
+<div style="display: flex; flex-direction: column; gap: 40px;">
+    <div style="display: flex; align-items: center;">
+        <img src="images/ict.png" alt="Institute of Computing Technology, Chinese Academy of Sciences" style="width: 50px; margin-right: 20px;">
+        <div style="display: flex; flex-direction: column;">
+            <div style="font-weight: bold;">Institute of Computing Technology, Chinese Academy of Sciences</div>
+            <div style="font-size: 0.9em; color: gray;">Master Student in Computer Science | Sep. 2022 - present</div>
+        </div>
+    </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><img src='images/ict.png' alt="sym" width="100%"></div></div>
-<div class='paper-box-text' markdown="1">
-Institute of Computing Technology, Chinese Academy of Sciences \\
-Master Student Sep. 2022 - present
+    <div style="display: flex; align-items: center;">
+        <img src="images/hebut.png" alt="Institute of Computing Technology, Chinese Academy of Sciences" style="width: 50px; margin-right: 20px;">
+        <div style="display: flex; flex-direction: column;">
+            <div style="font-weight: bold;"> Hebei University of Technology,</div>
+            <div style="font-size: 0.9em; color: gray;">B.S. in Computer Science | Sep. 2018 - Jun. 2022</div>
+        </div>
+    </div>
 </div>
-</div>
 
 
-- 2022.09 - now, Harbin Institute of Technology, Beijing
-- 2018.09 - 2022.06, Hebei University of Technology, BSc in Computer Science(GPA: 3.93/4, Rank: 1/105).
+
