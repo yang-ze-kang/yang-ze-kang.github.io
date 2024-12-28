@@ -27,7 +27,7 @@ author:
   location         : "Beijing"
   employer         :
   pubmed           : 
-  googlescholar    : ""
+  googlescholar    : "https://scholar.google.com.hk/citations?user=1jNkCnwAAAAJ&hl=en"
   email            : "yangzekang2000@163.com"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
@@ -43,7 +43,7 @@ author:
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : "rayeren"
+  # linkedin         : "rayeren"
   dblp             : "https://dblp.org/pid/329/6712.html"
   orcid            : "https://orcid.org/0009-0001-2435-1724"
   pinterest        :
