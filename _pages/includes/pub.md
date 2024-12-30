@@ -1,7 +1,7 @@
 
 # 📝 Publications 
 
-- [NADER: Neural Architecture Design via Multi-Agent Collaboration](https://arxiv.org/pdf/2412.19206)
+- [NADER: Neural Architecture Design via Multi-Agent Collaboration](https://arxiv.org/pdf/2412.19206), **Zekang Yang**, Wang Zeng, Sheng Jin, Chen Qian, Ping Luo, Wentao Liu.
 
 - ``AAAI 2025`` [AutoMMLab: Automatically Generating Deployable Models from Language Instructions for Computer Vision Tasks](https://arxiv.org/pdf/2402.15351v2), **Zekang Yang**, Wang Zeng, Sheng Jin, Chen Qian, Ping Luo, Wentao Liu. \| [![](https://img.shields.io/github/stars/yang-ze-kang/AutoMMLab?style=social&label=Code+Stars)](https://github.com/yang-ze-kang/AutoMMLab)
 
