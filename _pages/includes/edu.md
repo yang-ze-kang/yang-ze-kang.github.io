@@ -1,5 +1,5 @@
 # 📖 Educations
-<div style="display: flex; flex-direction: column; gap: 40px;">
+<!-- <div style="display: flex; flex-direction: column; gap: 40px;">
     <div style="display: flex; align-items: center;">
         <img src="images/ict.png" alt="Institute of Computing Technology, Chinese Academy of Sciences" style="width: 50px; margin-right: 20px;">
         <div style="display: flex; flex-direction: column;">
@@ -14,7 +14,12 @@
             <div style="font-size: 0.9em; color: gray;">B.S. in Computer Science | GPA: 3.93/4, rank: 1/105 | Sep. 2018 - Jun. 2022</div>
         </div>
     </div>
-</div>
+</div> -->
+
+
+- 2022.09 - 2024.06, Master, Institute of Computing Technology, Chinese Academy of Sciences, Beijing.
+- 2018.09 - 2022.06, Undergraduate, Hebei University of Technology, Tianjin, (GPA: 3.93/4, rank: 1/105).
+
 
 
 
