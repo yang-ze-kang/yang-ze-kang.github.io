@@ -7,7 +7,6 @@
             <div style="font-size: 0.9em; color: gray;">Master Student in Computer Science | Sep. 2022 - present</div>
         </div>
     </div>
-
     <div style="display: flex; align-items: center;">
         <img src="images/hebut.png" alt="Institute of Computing Technology, Chinese Academy of Sciences" style="width: 50px; margin-right: 20px;">
         <div style="display: flex; flex-direction: column;">
