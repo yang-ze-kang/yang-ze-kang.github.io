@@ -10,7 +10,7 @@ authors:
   - {name: "Sheng Jin<sup>✉️</sup>", institution: "2,1"}
   - {name: "Chen Qian", institution: "1"}
   - {name: "Ping Luo", institution: "2,3"}
-  - {name: "Wentao Liu", institution: "1"}
+  - {name: "Wentao Liu<sup>✉️</sup>", institution: "1"}
 institutions:
 - {name: "SenseTime Research and Tetras.AI", institution: "1"}
 - {name: "The University of Hong Kong", institution: "2"}
