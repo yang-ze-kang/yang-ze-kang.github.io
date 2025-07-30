@@ -17,7 +17,7 @@
 </div> -->
 
 
-- 2022.09 - 2024.06, Master, Institute of Computing Technology, Chinese Academy of Sciences, Beijing.
+- 2022.09 - 2025.06, Master, Institute of Computing Technology, Chinese Academy of Sciences, Beijing.
 - 2018.09 - 2022.06, Undergraduate, Hebei University of Technology, Tianjin, (GPA: 3.93/4, rank: 1/105).
 
 
