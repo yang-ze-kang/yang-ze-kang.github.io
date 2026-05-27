@@ -10,6 +10,8 @@
 
 ### 🩻 Medical Image Analysis
 
+- [PA-MIL: Phenotype-Aware Multiple Instance Learning Guided by Language Prompting and Genotype-to-Phenotype Relationships](https://arxiv.org/abs/2602.02558),  **Zekang Yang**, Hong Liu, Xiangdong Wang. \| [![](https://img.shields.io/github/stars/yang-ze-kang/PA-MIL?style=social&label=Code+Stars)](https://github.com/yang-ze-kang/PA-MIL)
+
 - ``MICCAI 2024`` [SCMIL: Sparse Context-Aware Multiple Instance Learning for Predicting Cancer Survival Probability Distribution in Whole Slide Images](https://link.springer.com/chapter/10.1007/978-3-031-72083-3_42), **Zekang Yang**, Hong Liu, Xiangdong Wang. \| [![](https://img.shields.io/github/stars/yang-ze-kang/SCMIL?style=social&label=Code+Stars)](https://github.com/yang-ze-kang/SCMIL)
 
 - ``MM 2024 workshop`` [A Multimodal Adaptive Cooperative Learning Framework for Cancer Survival Risk Prediction](https://dl.acm.org/doi/abs/10.1145/3688868.3689195), **Zekang Yang**, Hong Liu, Xiangdong Wang.

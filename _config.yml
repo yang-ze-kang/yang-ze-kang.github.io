@@ -7,7 +7,7 @@
 
 # Site Settings
 title                    : "Zekang Yang"
-description              : "Focusing on Medical Image Analysis and LLMs."
+description              : "Focusing on computer vision and LLMs."
 repository               : "yang-ze-kang/yang-ze-kang.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -22,7 +22,7 @@ baidu_site_verification  : code-ZxFK3f4pfb
 # Site Author
 author:
   name             : "Zekang Yang"
-  avatar           : "images/android-chrome-512x512.png"
+  avatar           : "images/android-chrome-512x512.jpg"
   bio              : ""
   location         : "Beijing"
   employer         :
