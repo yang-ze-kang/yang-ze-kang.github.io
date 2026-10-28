@@ -1,5 +1,12 @@
 
-# 📝 Publications 
+# 📝 Publications
+
+### 🧠 AI & Neuroscience
+
+- ``NeurIPS 2026`` [CORAL: A Benchmark for Structure-aware and Brain-wide Neuron Reconstruction in Light Microscopy](https://arxiv.org/abs/2608.30768), **Zekang Yang**, Jiamin Li, Zhenghua Li, Jiaqi Fan, Zengcai Guo, Xiaolin Hu. \|  [![](https://img.shields.io/github/stars/yang-ze-kang/CORAL?style=social&label=Code+Stars)](https://github.com/yang-ze-kang/CORAL)
+
+- ``NeurIPS 2026`` [BrainEM: A Large-Scale and Diverse Benchmark for EM Neuron Segmentation in Connectomics](https://github.com/kwinderic/BrainEM), Zhenghua Li, Lanyue Zhang, **Zekang Yang**, Kai Li, Yuwei Peng, Song-Hai Shi, Xiaolin Hu. \| [![](https://img.shields.io/github/stars/kwinderic/BrainEM?style=social&label=Code+Stars)](https://github.com/kwinderic/BrainEM)
+
 
 ### 🤖 Large Language Model
 
